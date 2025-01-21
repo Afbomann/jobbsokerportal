@@ -1,43 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
+import { prisma } from "@/libs/prisma";
 
-type TApplication = {
-  title: string;
-  url: string;
-  expires: Date;
-};
+export default async function HomePage() {
+  const applications = await prisma.application.findMany({
+    orderBy: { id: "desc" },
+  });
 
-type TApplications = TApplication[];
-
-const applications: TApplications = [
-  {
-    title: "Lærling IT-utvikler - Trondheim",
-    url: "https://960040.webcruiter.no/main/recruit/public/4908325779?&language=nb&use_position_site_header=0&culture_id=NB-NO&url_org=960040",
-    expires: new Date("2025-02-09"),
-  },
-  {
-    title: "Lærling IT-drift - Trondheim",
-    url: "https://960040.webcruiter.no/main/recruit/public/4909620759?&language=nb&use_position_site_header=0&culture_id=NB-NO&url_org=960040",
-    expires: new Date("2025-02-09"),
-  },
-  {
-    title: "Lærling i IT-driftsfaget",
-    url: "https://960040.webcruiter.no/main/recruit/public/4908436450?&language=nb&use_position_site_header=0&culture_id=NB-NO&url_org=960040",
-    expires: new Date("2025-02-02"),
-  },
-  {
-    title: "Lærling IT-drift - Steinkjer",
-    url: "https://960040.webcruiter.no/main/recruit/public/4909613819?&language=nb&use_position_site_header=0&culture_id=NB-NO&url_org=960040",
-    expires: new Date("2025-02-09"),
-  },
-  {
-    title: "Elkjøp - Utvikler",
-    url: "elkop.no",
-    expires: new Date("2025-1-16"),
-  }
-];
-
-export default function Home() {
   const applicationsValid = applications.filter(
     (application) => application.expires.getTime() > new Date().getTime()
   );
@@ -61,15 +30,17 @@ export default function Home() {
 
       <p className="text-sm lg:text-base mt-[2dvh]">
         Dette er en portal som er utviklet for å gi deg oversikt over
-        tilgjengelige stillinger. Her kan du enkelt finne oppdaterte
-        stillingsutlysninger og muligheter for å starte eller utvikle karrieren
+        tilgjengelige søknader. Her kan du enkelt finne oppdaterte
+        søknadsutlysninger og muligheter for å starte eller utvikle karrieren
         din innen ulike fagområder.
       </p>
 
-      <h4 className="text-lg lg:text-xl mt-[5dvh]">Stillinger tilgjengelig ({applicationsValid.length})</h4>
+      <h4 className="text-lg lg:text-xl mt-[5dvh]">
+        Søknader tilgjengelig ({applicationsValid.length})
+      </h4>
       {applicationsValid.length == 0 && (
         <h5 className="text-sm lg:text-base text-gray-600">
-          Ingen stillinger tilgjengelig
+          Ingen søknader tilgjengelig
         </h5>
       )}
       {applicationsValid.length > 0 && (
@@ -90,17 +61,20 @@ export default function Home() {
                 Link til søknad
               </Link>
               <p className="text-sm lg:text-base">
-                Frist: {application.expires.toLocaleDateString("NO")}
+                Frist: {application.expires.toLocaleDateString("NO")} |
+                Stillinger: {application.positions}
               </p>
             </div>
           ))}
         </div>
       )}
 
-      <h4 className="text-lg lg:text-xl mt-[5dvh]">Stillinger utgått ({applicationsExpired.length})</h4>
+      <h4 className="text-lg lg:text-xl mt-[5dvh]">
+        Søknader utgått ({applicationsExpired.length})
+      </h4>
       {applicationsExpired.length == 0 && (
         <h5 className="text-sm lg:text-base text-gray-600">
-          Ingen stillinger utgått
+          Ingen søknader utgått
         </h5>
       )}
       {applicationsExpired.length > 0 && (
