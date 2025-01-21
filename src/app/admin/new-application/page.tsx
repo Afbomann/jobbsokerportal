@@ -7,8 +7,8 @@ import { prisma } from "@/libs/prisma";
 import { revalidatePath } from "next/cache";
 
 export const metadata: Metadata = {
-  title: "Jobbsøkeportal - Opprett ny stilling",
-  description: "Jobbsøkeportal - Opprett ny stilling",
+  title: "Jobbsøkerportal - Opprett ny stilling",
+  description: "Jobbsøkerportal - Opprett ny stilling",
 };
 
 export default async function NewApplicationPage() {

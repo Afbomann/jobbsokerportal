@@ -12,13 +12,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
   if (!authenticated)
     return {
-      title: "Jobbsøkeportal - Admin login",
-      description: "Jobbsøkeportal - Admin login",
+      title: "Jobbsøkerportal - Admin login",
+      description: "Jobbsøkerportal - Admin login",
     };
 
   return {
-    title: "Jobbsøkeportal - Admin",
-    description: "Jobbsøkeportal - Admin",
+    title: "Jobbsøkerportal - Admin",
+    description: "Jobbsøkerportal - Admin",
   };
 }
 
