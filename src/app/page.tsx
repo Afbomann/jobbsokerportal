@@ -30,6 +30,11 @@ const applications: TApplications = [
     url: "https://960040.webcruiter.no/main/recruit/public/4909613819?&language=nb&use_position_site_header=0&culture_id=NB-NO&url_org=960040",
     expires: new Date("2025-02-09"),
   },
+  {
+    title: "Elkjøp - Utvikler",
+    url: "elkop.no",
+    expires: new Date("2025-1-16"),
+  }
 ];
 
 export default function Home() {
@@ -42,7 +47,7 @@ export default function Home() {
   );
 
   return (
-    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto outline-gray-500 outline outline-1 p-[20px] flex flex-col">
+    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto outline-gray-300 outline outline-1 p-[20px] flex flex-col bg-slate-100 lg:rounded-sm">
       <div className="flex gap-[20px]">
         <h2 className="text-2xl lg:text-3xl mr-auto">Jobbsøkeportal</h2>
         <Image
@@ -61,7 +66,7 @@ export default function Home() {
         din innen ulike fagområder.
       </p>
 
-      <h4 className="text-lg lg:text-xl mt-[5dvh]">Stillinger tilgjengelig</h4>
+      <h4 className="text-lg lg:text-xl mt-[5dvh]">Stillinger tilgjengelig ({applicationsValid.length})</h4>
       {applicationsValid.length == 0 && (
         <h5 className="text-sm lg:text-base text-gray-600">
           Ingen stillinger tilgjengelig
@@ -71,7 +76,7 @@ export default function Home() {
         <div className="mt-[2dvh] flex flex-col gap-[2dvh]">
           {applicationsValid.map((application, applicationIndex) => (
             <div
-              className="bg-slate-200 rounded-md p-[13px] shadow-md flex flex-col gap-[3px]"
+              className="bg-white rounded-sm p-[13px] shadow-md flex flex-col gap-[3px]"
               key={applicationIndex}
             >
               <p className="text-base lg:text-lg">
@@ -79,7 +84,7 @@ export default function Home() {
               </p>
               <Link
                 target="_blank"
-                className="underline text-blue-400 text-sm lg:text-base"
+                className="underline text-blue-400 text-sm lg:text-base w-fit"
                 href={application.url}
               >
                 Link til søknad
@@ -92,7 +97,7 @@ export default function Home() {
         </div>
       )}
 
-      <h4 className="text-lg lg:text-xl mt-[5dvh]">Stillinger utgått</h4>
+      <h4 className="text-lg lg:text-xl mt-[5dvh]">Stillinger utgått ({applicationsExpired.length})</h4>
       {applicationsExpired.length == 0 && (
         <h5 className="text-sm lg:text-base text-gray-600">
           Ingen stillinger utgått
@@ -102,7 +107,7 @@ export default function Home() {
         <div className="mt-[2dvh] flex flex-col gap-[2dvh]">
           {applicationsExpired.map((application, applicationIndex) => (
             <div
-              className="bg-red-400 rounded-md p-[13px] shadow-md flex flex-col gap-[3px]"
+              className="bg-red-400 rounded-sm p-[13px] shadow-md flex flex-col gap-[3px]"
               key={applicationIndex}
             >
               <p className="text-base lg:text-lg">
@@ -110,10 +115,10 @@ export default function Home() {
               </p>
               <Link
                 target="_blank"
-                className="underline text-sm lg:text-base"
+                className="underline text-sm lg:text-base w-fit"
                 href={application.url}
               >
-                Link
+                Link til søknad
               </Link>
               <p className="text-sm lg:text-base">
                 Frist utgikk: {application.expires.toLocaleDateString("NO")}
