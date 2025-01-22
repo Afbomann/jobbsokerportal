@@ -30,7 +30,7 @@ export default async function NewApplicationPage() {
     if (!input.expires) return { err: "Søknadsfrist mangler." };
     if (!input.positions && input.positions != 0)
       return { err: "Stillinger mangler." };
-    console.log(input.expires);
+
     await prisma.application.create({
       data: {
         title: input.title,
