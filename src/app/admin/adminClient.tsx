@@ -42,8 +42,8 @@ export default function AdminClient(props: {
       }
     });
 
-    setApplications((prev) => (prev = filteredApplications));
-  }, [filter]);
+    setApplications(() => filteredApplications);
+  }, [filter, props.applications]);
 
   return (
     <>

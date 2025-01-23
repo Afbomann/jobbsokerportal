@@ -42,7 +42,7 @@ export function HomeClient(props: {
       }
     });
 
-    setApplications((prev) => (prev = filteredApplications));
+    setApplications(() => filteredApplications);
   }, [filter]);
 
   const applicationsValid = applications.filter(
