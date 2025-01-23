@@ -11,7 +11,7 @@ import { revalidatePath } from "next/cache";
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const authenticated = await authenticate();
 
@@ -38,7 +38,7 @@ export async function generateMetadata({
 export default async function ApplicationPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   async function editApplicationServer(
     input: {
