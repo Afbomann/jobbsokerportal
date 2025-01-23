@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/libs/prisma";
 
+export const revalidate = 10;
+
 export default async function HomePage() {
   const applications = await prisma.application.findMany({
     orderBy: { id: "desc" },
