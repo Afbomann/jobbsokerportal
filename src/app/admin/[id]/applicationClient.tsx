@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { TServerActionResponse } from "@/libs/types";
+import { applicationType } from "@prisma/client";
 
 export function ApplicationClient(props: {
   application: {
@@ -11,6 +12,7 @@ export function ApplicationClient(props: {
     url: string;
     expires: Date;
     positions: number;
+    type: applicationType;
   };
   editApplicationServer: (
     input: {
@@ -18,6 +20,7 @@ export function ApplicationClient(props: {
       url: string;
       expires: Date;
       positions: number;
+      type: applicationType;
     },
     id: string
   ) => Promise<TServerActionResponse>;
@@ -28,6 +31,7 @@ export function ApplicationClient(props: {
     url: props.application.url,
     expires: props.application.expires,
     positions: props.application.positions,
+    type: props.application.type,
   });
   const router = useRouter();
   const [status, setStatus] = useState({
@@ -57,6 +61,9 @@ export function ApplicationClient(props: {
       return setStatus(
         (prev) => (prev = { ...prev, error: "Stillinger mangler." })
       );
+
+    if (!input.type)
+      return setStatus((prev) => (prev = { ...prev, error: "Fag mangler." }));
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
@@ -160,6 +167,22 @@ export function ApplicationClient(props: {
               type="number"
               className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
             />
+          </div>
+          <div className="flex flex-col gap-[3px]">
+            <label className="text-sm lg:text-base">Fag</label>
+            <select
+              value={input.type}
+              onChange={(e) =>
+                setInput(
+                  //@ts-expect-error funker fint
+                  (prev) => (prev = { ...prev, type: e.target.value })
+                )
+              }
+              className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+            >
+              <option>Drift</option>
+              <option>Utvikling</option>
+            </select>
           </div>
         </div>
         {status.loading && (

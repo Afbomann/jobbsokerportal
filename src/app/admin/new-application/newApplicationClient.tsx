@@ -1,6 +1,7 @@
 "use client";
 
 import { TServerActionResponse } from "@/libs/types";
+import { applicationType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -10,14 +11,22 @@ export default function NewApplicationClient(props: {
     url: string;
     expires: Date;
     positions: number;
+    type: applicationType;
   }) => Promise<TServerActionResponse>;
 }) {
   const router = useRouter();
-  const [input, setInput] = useState({
+  const [input, setInput] = useState<{
+    title: string;
+    url: string;
+    expires: Date;
+    positions: number;
+    type: applicationType;
+  }>({
     title: "",
     url: "",
     expires: new Date(),
     positions: 0,
+    type: "Drift",
   });
   const [status, setStatus] = useState({
     loading: false,
@@ -46,6 +55,9 @@ export default function NewApplicationClient(props: {
       return setStatus(
         (prev) => (prev = { ...prev, error: "Stillinger mangler." })
       );
+
+    if (!input.type)
+      return setStatus((prev) => (prev = { ...prev, error: "Fag mangler." }));
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
@@ -124,10 +136,26 @@ export default function NewApplicationClient(props: {
             className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
           />
         </div>
+        <div className="flex flex-col gap-[3px]">
+          <label className="text-sm lg:text-base">Fag</label>
+          <select
+            value={input.type}
+            onChange={(e) =>
+              setInput(
+                //@ts-expect-error funker fint
+                (prev) => (prev = { ...prev, type: e.target.value })
+              )
+            }
+            className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+          >
+            <option>Drift</option>
+            <option>Utvikling</option>
+          </select>
+        </div>
       </div>
       {status.loading && (
         <p className="text-sm lg:text-base text-gray-600 mt-[10px]">
-          Oppretter søknad...
+          Oppretter utlysning...
         </p>
       )}
       {status.error && (

@@ -1,11 +1,11 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { TApplicationFilter } from "@/libs/types";
 import { applicationType } from "@prisma/client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-export function HomeClient(props: {
+export default function AdminClient(props: {
   applications: {
     id: string;
     title: string;
@@ -45,14 +45,6 @@ export function HomeClient(props: {
     setApplications((prev) => (prev = filteredApplications));
   }, [filter]);
 
-  const applicationsValid = applications.filter(
-    (application) => application.expires.getTime() > new Date().getTime()
-  );
-
-  const applicationsExpired = applications.filter(
-    (application) => application.expires.getTime() < new Date().getTime()
-  );
-
   return (
     <>
       <div className="mt-[2dvh] flex flex-col gap-[15px]">
@@ -81,24 +73,24 @@ export function HomeClient(props: {
         </select>
       </div>
 
-      <h4 className="text-lg lg:text-xl mt-[2dvh]">
-        Utlysninger tilgjengelig ({applicationsValid.length})
-      </h4>
-      {applicationsValid.length == 0 && (
-        <h5 className="text-sm lg:text-base text-gray-600">
-          Ingen utlysninger tilgjengelig
-        </h5>
-      )}
-      {applicationsValid.length > 0 && (
+      {applications.length > 0 && (
         <div className="mt-[2dvh] flex flex-col gap-[2dvh]">
-          {applicationsValid.map((application) => (
+          {applications.map((application) => (
             <div
               className="bg-white rounded-sm p-[13px] shadow-md flex flex-col gap-[3px]"
               key={application.id}
             >
-              <p className="text-base lg:text-lg">
-                <b>{application.title}</b>
-              </p>
+              <div className="flex gap-[10px] items-center">
+                <p className="text-base lg:text-lg mr-auto">
+                  <b>{application.title}</b>
+                </p>
+                <Link
+                  className="bg-blue-200 px-[15px] py-[5px] rounded-sm shadow-sm text-sm lg:text-base"
+                  href={`/admin/${application.id}`}
+                >
+                  Rediger
+                </Link>
+              </div>
               <Link
                 target="_blank"
                 className="underline text-blue-400 text-sm lg:text-base w-fit"
@@ -109,40 +101,6 @@ export function HomeClient(props: {
               <p className="text-sm lg:text-base">
                 Frist: {application.expires.toLocaleDateString("NO")} | Fag:{" "}
                 {application.type} | Stillinger: {application.positions}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <h4 className="text-lg lg:text-xl mt-[5dvh]">
-        Utlysninger utgått ({applicationsExpired.length})
-      </h4>
-      {applicationsExpired.length == 0 && (
-        <h5 className="text-sm lg:text-base text-gray-600">
-          Ingen utlysninger utgått
-        </h5>
-      )}
-      {applicationsExpired.length > 0 && (
-        <div className="mt-[2dvh] flex flex-col gap-[2dvh]">
-          {applicationsExpired.map((application) => (
-            <div
-              className="bg-red-400 rounded-sm p-[13px] shadow-md flex flex-col gap-[3px]"
-              key={application.id}
-            >
-              <p className="text-base lg:text-lg">
-                <b>{application.title}</b>
-              </p>
-              <Link
-                target="_blank"
-                className="underline text-sm lg:text-base w-fit"
-                href={application.url}
-              >
-                Link til søknad
-              </Link>
-              <p className="text-sm lg:text-base">
-                Frist utgikk: {application.expires.toLocaleDateString("NO")} |
-                Fag: {application.type}
               </p>
             </div>
           ))}

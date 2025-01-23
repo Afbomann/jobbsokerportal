@@ -7,6 +7,7 @@ export const revalidate = 10;
 export default async function HomePage() {
   const applications = await prisma.application.findMany({
     select: {
+      id: true,
       title: true,
       url: true,
       expires: true,
@@ -31,7 +32,7 @@ export default async function HomePage() {
 
       <p className="text-sm lg:text-base mt-[2dvh]">
         Dette er en portal som er utviklet for å gi deg oversikt over
-        tilgjengelige søknader. Her kan du enkelt finne oppdaterte
+        tilgjengelige utlysninger. Her kan du enkelt finne oppdaterte
         søknadsutlysninger og muligheter for å starte eller utvikle karrieren
         din innen ulike fagområder.
       </p>
