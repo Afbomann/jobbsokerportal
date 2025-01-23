@@ -28,21 +28,21 @@ export default function LoginClient(props: {
         (prev) => (prev = { ...prev, error: "Skriv inn passord." })
       );
 
-    setStatus((prev) => (prev = { loading: true, error: "" }));
+    setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
     await props
       .loginServer(input)
       .then((response) => {
         if (response.err) {
           setStatus(
-            (prev) => (prev = { loading: false, error: response.err! })
+            (prev) => (prev = { ...prev, loading: false, error: response.err! })
           );
         } else {
-          setStatus((prev) => (prev = { loading: false, error: "" }));
+          setStatus((prev) => (prev = { ...prev, loading: false, error: "" }));
         }
       })
       .catch((err: any) =>
-        setStatus((prev) => (prev = { loading: false, error: err }))
+        setStatus((prev) => (prev = { ...prev, loading: false, error: err }))
       );
   }
 

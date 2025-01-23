@@ -47,22 +47,22 @@ export default function NewApplicationClient(props: {
         (prev) => (prev = { ...prev, error: "Stillinger mangler." })
       );
 
-    setStatus((prev) => (prev = { loading: true, error: "" }));
+    setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
     await props
       .newApplicationServer(input)
       .then((response) => {
         if (response.err) {
           setStatus(
-            (prev) => (prev = { loading: false, error: response.err! })
+            (prev) => (prev = { ...prev, loading: false, error: response.err! })
           );
         } else {
-          setStatus((prev) => (prev = { loading: false, error: "" }));
+          setStatus((prev) => (prev = { ...prev, loading: false, error: "" }));
           router.push("/admin");
         }
       })
-      .catch((err: any) =>
-        setStatus((prev) => (prev = { loading: false, error: err }))
+      .catch((err: string) =>
+        setStatus((prev) => (prev = { ...prev, loading: false, error: err }))
       );
   }
 
@@ -96,7 +96,7 @@ export default function NewApplicationClient(props: {
           <input
             value={input.expires.toISOString().split("T")[0]}
             onChange={(e) => {
-              //@ts-ignore
+              //@ts-nocheck
               setInput(
                 (prev) =>
                   (prev = {
