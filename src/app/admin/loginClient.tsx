@@ -41,7 +41,7 @@ export default function LoginClient(props: {
           setStatus((prev) => (prev = { ...prev, loading: false, error: "" }));
         }
       })
-      .catch((err: any) =>
+      .catch((err: string) =>
         setStatus((prev) => (prev = { ...prev, loading: false, error: err }))
       );
   }

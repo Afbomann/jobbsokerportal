@@ -94,7 +94,7 @@ export function ApplicationClient(props: {
           router.push("/admin");
         }
       })
-      .catch((err: any) =>
+      .catch((err: string) =>
         setStatus((prev) => (prev = { ...prev, loading: false, error: err }))
       );
   }
