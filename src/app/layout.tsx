@@ -19,7 +19,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${open_sans.className} antialiased`}>{children}</body>
+      <body className={`${open_sans.className} antialiased`}>
+        <div
+          style={{
+            backgroundImage: `url("/images/bg.jpg")`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            zIndex: -1,
+          }}
+          className="fixed w-full h-[100dvh] top-0 blur-[5px]"
+        />
+        {children}
+      </body>
     </html>
   );
 }

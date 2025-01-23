@@ -49,7 +49,7 @@ export default function LoginClient(props: {
   return (
     <form
       onSubmit={loginClient}
-      className="w-[380px] max-w-[85%] mx-auto mt-[15dvh] bg-slate-100 shadow-md outline-gray-300 outline outline-1 p-[20px] lg:rounded-sm flex flex-col"
+      className="w-[380px] max-w-[85%] mx-auto mt-[15dvh] bg-slate-100 shadow-md outline-gray-500 outline outline-1 p-[20px] lg:rounded-sm flex flex-col"
     >
       <h4 className="text-center text-lg lg:text-xl">Admin login</h4>
       <div className="flex flex-col gap-[3px] mt-[20px]">
