@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { ApplicationClient } from "./applicationClient";
 import { TServerActionResponse } from "@/libs/types";
 import { revalidatePath } from "next/cache";
+import { applicationType } from "@prisma/client";
 
 export async function generateMetadata({
   params,
@@ -46,6 +47,7 @@ export default async function ApplicationPage({
       url: string;
       expires: Date;
       positions: number;
+      type: applicationType;
     },
     id: string
   ): Promise<TServerActionResponse> {
@@ -61,6 +63,7 @@ export default async function ApplicationPage({
     if (!input.expires) return { err: "Søknadsfrist mangler." };
     if (!input.positions && input.positions != 0)
       return { err: "Stillinger mangler." };
+    if (!input.type) return { err: "Fag mangler." };
     if (!id) return { err: "ID mangler." };
 
     const applicationFound = await prisma.application.findFirst({
@@ -76,6 +79,7 @@ export default async function ApplicationPage({
         url: input.url,
         expires: input.expires,
         positions: input.positions,
+        type: input.type,
       },
     });
 
@@ -130,6 +134,7 @@ export default async function ApplicationPage({
         url: applicationFound.url,
         expires: applicationFound.expires,
         positions: applicationFound.positions,
+        type: applicationFound.type,
       }}
       editApplicationServer={editApplicationServer}
       deleteApplicationServer={deleteApplicationServer}

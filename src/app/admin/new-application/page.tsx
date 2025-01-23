@@ -5,6 +5,7 @@ import NewApplicationClient from "./newApplicationClient";
 import { TServerActionResponse } from "@/libs/types";
 import { prisma } from "@/libs/prisma";
 import { revalidatePath } from "next/cache";
+import { applicationType } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Jobbsøkerportal - Opprett ny stilling",
@@ -17,6 +18,7 @@ export default async function NewApplicationPage() {
     url: string;
     expires: Date;
     positions: number;
+    type: applicationType;
   }): Promise<TServerActionResponse> {
     "use server";
 
@@ -30,6 +32,7 @@ export default async function NewApplicationPage() {
     if (!input.expires) return { err: "Søknadsfrist mangler." };
     if (!input.positions && input.positions != 0)
       return { err: "Stillinger mangler." };
+    if (!input.type) return { err: "Fag mangler." };
 
     await prisma.application.create({
       data: {
@@ -37,6 +40,7 @@ export default async function NewApplicationPage() {
         url: input.url,
         expires: input.expires,
         positions: input.positions,
+        type: input.type,
       },
     });
 
@@ -50,7 +54,7 @@ export default async function NewApplicationPage() {
 
   return (
     <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto outline-gray-500 outline outline-1 p-[20px] flex flex-col bg-slate-100 lg:rounded-sm">
-      <h2 className="text-xl lg:text-2xl">Opprett ny søknad</h2>
+      <h2 className="text-xl lg:text-2xl">Opprett ny utlysning</h2>
       <NewApplicationClient newApplicationServer={newApplicationServer} />
     </div>
   );

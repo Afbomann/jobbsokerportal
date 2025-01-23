@@ -6,6 +6,7 @@ import jsonwebtoken from "jsonwebtoken";
 import { TServerActionResponse } from "@/libs/types";
 import { prisma } from "@/libs/prisma";
 import Link from "next/link";
+import AdminClient from "./adminClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   const authenticated = await authenticate();
@@ -64,6 +65,14 @@ export default async function AdminPage() {
   if (!authenticated) return <LoginClient loginServer={loginServer} />;
 
   const applications = await prisma.application.findMany({
+    select: {
+      id: true,
+      title: true,
+      url: true,
+      expires: true,
+      positions: true,
+      type: true,
+    },
     orderBy: { id: "desc" },
   });
 
@@ -76,7 +85,7 @@ export default async function AdminPage() {
           className="text-sm lg:text-base bg-blue-200 px-[15px] py-[5px] rounded-sm shadow-sm"
           href={"/admin/new-application"}
         >
-          Opprett ny søknad
+          Opprett ny utlysning
         </Link>
         <form
           action={async () => {
@@ -92,39 +101,7 @@ export default async function AdminPage() {
         </form>
       </div>
 
-      {applications.length > 0 && (
-        <div className="mt-[2dvh] flex flex-col gap-[2dvh]">
-          {applications.map((application) => (
-            <div
-              className="bg-white rounded-sm p-[13px] shadow-md flex flex-col gap-[3px]"
-              key={application.id}
-            >
-              <div className="flex gap-[10px] items-center">
-                <p className="text-base lg:text-lg mr-auto">
-                  <b>{application.title}</b>
-                </p>
-                <Link
-                  className="bg-blue-200 px-[15px] py-[5px] rounded-sm shadow-sm text-sm lg:text-base"
-                  href={`/admin/${application.id}`}
-                >
-                  Rediger
-                </Link>
-              </div>
-              <Link
-                target="_blank"
-                className="underline text-blue-400 text-sm lg:text-base w-fit"
-                href={application.url}
-              >
-                Link til søknad
-              </Link>
-              <p className="text-sm lg:text-base">
-                Frist: {application.expires.toLocaleDateString("NO")} |
-                Stillinger: {application.positions}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+      <AdminClient applications={applications} />
     </div>
   );
 }
