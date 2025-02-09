@@ -43,7 +43,7 @@ export function HomeClient(props: {
     });
 
     setApplications(() => filteredApplications);
-  }, [filter]);
+  }, [filter, props.applications]);
 
   const applicationsValid = applications.filter(
     (application) => application.expires.getTime() > new Date().getTime()
