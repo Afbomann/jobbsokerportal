@@ -57,7 +57,7 @@ export function HomeClient(props: {
     <>
       <div className="mt-[2dvh] flex flex-col gap-[15px]">
         <select
-          className="px-[15px] py-[5px] outline-none rounded-sm shadow-sm text-sm lg:text-base"
+          className="px-[15px] py-[6px] outline outline-1 outline-slate-300 rounded-md text-sm lg:text-base bg-white"
           onChange={(e) =>
             //@ts-expect-error funker fint
             setFilter((prev) => (prev = { ...prev, expires: e.target.value }))
@@ -68,7 +68,7 @@ export function HomeClient(props: {
           <option value="sort_expires_descending">Sorter frist synkende</option>
         </select>
         <select
-          className="px-[15px] py-[5px] outline-none rounded-sm shadow-sm text-sm lg:text-base"
+          className="px-[15px] py-[6px] outline outline-1 outline-slate-300 rounded-md text-sm lg:text-base bg-white"
           onChange={(e) =>
             //@ts-expect-error funker fint
             setFilter((prev) => (prev = { ...prev, type: e.target.value }))
@@ -93,7 +93,7 @@ export function HomeClient(props: {
         <div className="mt-[2dvh] flex flex-col gap-[2dvh]">
           {applicationsValid.map((application) => (
             <div
-              className="bg-white rounded-sm p-[13px] shadow-md flex flex-col gap-[3px]"
+              className="bg-white outline outline-1 outline-slate-300 rounded-md p-[13px] flex flex-col gap-[3px]"
               key={application.id}
             >
               <p className="text-base lg:text-lg">
@@ -127,7 +127,7 @@ export function HomeClient(props: {
         <div className="mt-[2dvh] flex flex-col gap-[2dvh]">
           {applicationsExpired.map((application) => (
             <div
-              className="bg-red-400 rounded-sm p-[13px] shadow-md flex flex-col gap-[3px]"
+              className="bg-red-400 rounded-md p-[13px] shadow-md flex flex-col gap-[3px]"
               key={application.id}
             >
               <p className="text-base lg:text-lg">

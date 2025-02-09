@@ -107,13 +107,13 @@ export function ApplicationClient(props: {
   }
 
   return (
-    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto outline-gray-500 outline outline-1 p-[20px] flex flex-col bg-slate-100 lg:rounded-sm">
+    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto outline-slate-400 outline outline-1 p-[20px] flex flex-col bg-slate-100 lg:rounded-sm">
       <h2 className="text-xl lg:text-2xl">
         Rediger | {props.application.title}
       </h2>
       <div className="flex-col my-[3dvh]">
         <div className="flex gap-[20px] flex-wrap">
-          <div className="flex flex-col gap-[3px]">
+          <div className="flex flex-col gap-[3px] w-full">
             <label className="text-sm lg:text-base">Tittel</label>
             <input
               value={input.title}
@@ -121,10 +121,10 @@ export function ApplicationClient(props: {
                 setInput((prev) => (prev = { ...prev, title: e.target.value }))
               }
               type="text"
-              className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300"
             />
           </div>
-          <div className="flex flex-col gap-[3px]">
+          <div className="flex flex-col gap-[3px] w-full">
             <label className="text-sm lg:text-base">Link til søknad</label>
             <input
               value={input.url}
@@ -132,7 +132,7 @@ export function ApplicationClient(props: {
                 setInput((prev) => (prev = { ...prev, url: e.target.value }))
               }
               type="text"
-              className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300"
             />
           </div>
           <div className="flex flex-col gap-[3px]">
@@ -151,7 +151,7 @@ export function ApplicationClient(props: {
                 console.log(e.target.value);
               }}
               type="date"
-              className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300 bg-white"
             />
           </div>
           <div className="flex flex-col gap-[3px]">
@@ -165,7 +165,7 @@ export function ApplicationClient(props: {
                 )
               }
               type="number"
-              className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300"
             />
           </div>
           <div className="flex flex-col gap-[3px]">
@@ -178,7 +178,7 @@ export function ApplicationClient(props: {
                   (prev) => (prev = { ...prev, type: e.target.value })
                 )
               }
-              className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300 bg-white"
             >
               <option>Drift</option>
               <option>Utvikling</option>
@@ -201,13 +201,13 @@ export function ApplicationClient(props: {
           }`}
         >
           <button
-            className="bg-blue-200 py-[5px] px-[15px] text-sm lg:text-base cursor-pointer rounded-sm shadow-sm"
+            className="bg-blue-200 py-[5px] px-[15px] text-sm lg:text-base cursor-pointer rounded-md"
             onClick={editApplicationClient}
           >
             Lagre
           </button>
           <button
-            className="bg-red-400 py-[5px] px-[15px] text-sm lg:text-base cursor-pointer rounded-sm shadow-sm"
+            className="bg-red-400 py-[5px] px-[15px] text-sm lg:text-base cursor-pointer rounded-md"
             onClick={deleteApplicationClient}
           >
             Slett
