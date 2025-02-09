@@ -77,12 +77,12 @@ export default async function AdminPage() {
   });
 
   return (
-    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto outline-gray-500 outline outline-1 p-[20px] flex flex-col bg-slate-100 lg:rounded-sm">
+    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto outline-slate-400 outline outline-1 p-[20px] flex flex-col bg-slate-100 lg:rounded-sm">
       <h2 className="text-xl lg:text-2xl">Admin</h2>
 
       <div className="mt-[2dvh] flex gap-[15px]">
         <Link
-          className="text-sm lg:text-base bg-blue-200 px-[15px] py-[5px] rounded-sm shadow-sm"
+          className="text-sm lg:text-base bg-blue-200 px-[15px] py-[5px] rounded-md"
           href={"/admin/new-application"}
         >
           Opprett ny utlysning
@@ -95,7 +95,7 @@ export default async function AdminPage() {
             cookies_.delete("token");
           }}
         >
-          <button className="text-sm lg:text-base bg-red-400 px-[15px] py-[5px] rounded-sm shadow-sm">
+          <button className="text-sm lg:text-base bg-red-400 px-[15px] py-[5px] rounded-md">
             Logg-ut
           </button>
         </form>

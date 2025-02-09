@@ -49,7 +49,7 @@ export default function LoginClient(props: {
   return (
     <form
       onSubmit={loginClient}
-      className="w-[380px] max-w-[85%] mx-auto mt-[15dvh] bg-slate-100 shadow-md outline-gray-500 outline outline-1 p-[20px] lg:rounded-sm flex flex-col"
+      className="w-[380px] max-w-[85%] mx-auto mt-[15dvh] bg-slate-100 p-[20px] rounded-md flex flex-col outline outline-1 outline-slate-400"
     >
       <h4 className="text-center text-lg lg:text-xl">Admin login</h4>
       <div className="flex flex-col gap-[3px] mt-[20px]">
@@ -60,7 +60,7 @@ export default function LoginClient(props: {
             setInput((prev) => (prev = { ...prev, username: e.target.value }))
           }
           type="text"
-          className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+          className="text-sm lg:text-base rounded-md outline outline-1 outline-slate-300 px-[8px] py-[4px]"
         />
       </div>
       <div className="flex flex-col gap-[3px] mt-[15px]">
@@ -71,7 +71,7 @@ export default function LoginClient(props: {
             setInput((prev) => (prev = { ...prev, password: e.target.value }))
           }
           type="password"
-          className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+          className="text-sm lg:text-base rounded-md outline outline-1 outline-slate-300 px-[8px] py-[4px]"
         />
       </div>
       {status.loading && (
@@ -85,7 +85,7 @@ export default function LoginClient(props: {
         </p>
       )}
       <input
-        className={`bg-blue-200 py-[5px] text-sm lg:text-base cursor-pointer rounded-sm shadow-sm ${
+        className={`bg-blue-200 py-[5px] text-sm lg:text-base cursor-pointer rounded-md ${
           !status.loading && !status.error ? "mt-[20px]" : "mt-[5px]"
         }`}
         type="submit"

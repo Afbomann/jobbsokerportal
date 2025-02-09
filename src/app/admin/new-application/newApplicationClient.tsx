@@ -81,7 +81,7 @@ export default function NewApplicationClient(props: {
   return (
     <form onSubmit={newApplicationClient} className="flex-col my-[3dvh]">
       <div className="flex gap-[20px] flex-wrap">
-        <div className="flex flex-col gap-[3px]">
+        <div className="flex flex-col gap-[3px] w-full">
           <label className="text-sm lg:text-base">Tittel</label>
           <input
             value={input.title}
@@ -89,10 +89,10 @@ export default function NewApplicationClient(props: {
               setInput((prev) => (prev = { ...prev, title: e.target.value }))
             }
             type="text"
-            className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+            className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300"
           />
         </div>
-        <div className="flex flex-col gap-[3px]">
+        <div className="flex flex-col gap-[3px] w-full">
           <label className="text-sm lg:text-base">Link til søknad</label>
           <input
             value={input.url}
@@ -100,7 +100,7 @@ export default function NewApplicationClient(props: {
               setInput((prev) => (prev = { ...prev, url: e.target.value }))
             }
             type="text"
-            className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+            className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300"
           />
         </div>
         <div className="flex flex-col gap-[3px]">
@@ -119,7 +119,7 @@ export default function NewApplicationClient(props: {
               console.log(e.target.value);
             }}
             type="date"
-            className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+            className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300 bg-white"
           />
         </div>
         <div className="flex flex-col gap-[3px]">
@@ -133,7 +133,7 @@ export default function NewApplicationClient(props: {
               )
             }
             type="number"
-            className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+            className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300"
           />
         </div>
         <div className="flex flex-col gap-[3px]">
@@ -146,7 +146,7 @@ export default function NewApplicationClient(props: {
                 (prev) => (prev = { ...prev, type: e.target.value })
               )
             }
-            className="text-sm lg:text-base rounded-sm shadow-sm px-[5px] py-[3px] outline-none"
+            className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300 bg-white"
           >
             <option>Drift</option>
             <option>Utvikling</option>
@@ -164,7 +164,7 @@ export default function NewApplicationClient(props: {
         </p>
       )}
       <input
-        className={`bg-blue-200 py-[5px] px-[15px] text-sm lg:text-base cursor-pointer rounded-sm shadow-sm ${
+        className={`bg-blue-200 py-[5px] px-[15px] text-sm lg:text-base cursor-pointer rounded-md ${
           !status.loading && !status.error ? "mt-[20px]" : "mt-[5px]"
         }`}
         type="submit"
