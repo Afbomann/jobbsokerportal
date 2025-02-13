@@ -7,6 +7,7 @@ import { TServerActionResponse } from "@/libs/types";
 import { prisma } from "@/libs/prisma";
 import Link from "next/link";
 import AdminClient from "./adminClient";
+import bcrypt from "bcryptjs";
 
 export async function generateMetadata(): Promise<Metadata> {
   const authenticated = await authenticate();
@@ -39,7 +40,7 @@ export default async function AdminPage() {
 
     if (
       input.username != process.env.ADMIN_USERNAME ||
-      input.password != process.env.ADMIN_PASSWORD
+      !(await bcrypt.compare(input.password, process.env.ADMIN_PASSWORD!))
     )
       return { err: "Feil brukernavn eller passord." };
 
