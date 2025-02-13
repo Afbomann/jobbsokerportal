@@ -17,12 +17,17 @@ export default function AdminClient(props: {
 }) {
   const [applications, setApplications] = useState(props.applications);
   const [filter, setFilter] = useState<TApplicationFilter>({
+    search: "",
     expires: "sort_expires_ascending",
     type: "all",
   });
 
   useEffect(() => {
     let filteredApplications = props.applications;
+
+    filteredApplications = filteredApplications.filter((application) =>
+      application.title.toLowerCase().match(filter.search.toLowerCase())
+    );
 
     if (filter.type != "all") {
       filteredApplications = filteredApplications.filter(
@@ -47,7 +52,15 @@ export default function AdminClient(props: {
 
   return (
     <>
-      <div className="mt-[2dvh] flex flex-col gap-[15px]">
+      <div className="mt-[2dvh] flex flex-wrap gap-[15px]">
+        <input
+          placeholder="Søk etter en utlysning..."
+          className="flex-1 px-[15px] py-[6px] outline outline-1 outline-slate-300 rounded-md text-sm lg:text-base bg-white"
+          onChange={(e) =>
+            setFilter((prev) => (prev = { ...prev, search: e.target.value }))
+          }
+          value={filter.search}
+        />
         <select
           className="px-[15px] py-[6px] outline outline-1 outline-slate-300 rounded-md text-sm lg:text-base bg-white"
           onChange={(e) =>
