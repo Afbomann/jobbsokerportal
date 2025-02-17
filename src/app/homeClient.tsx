@@ -29,13 +29,9 @@ export function HomeClient(props: { applications: application[] }) {
 
     filteredApplications.sort((a, b) => {
       if (filter.expires == "sort_expires_ascending") {
-        return filter.type == "all"
-          ? a.expires.getTime() - b.expires.getTime()
-          : b.expires.getTime() - a.expires.getTime();
+        return a.expires.getTime() - b.expires.getTime();
       } else {
-        return filter.type == "all"
-          ? b.expires.getTime() - a.expires.getTime()
-          : a.expires.getTime() - b.expires.getTime();
+        return b.expires.getTime() - a.expires.getTime();
       }
     });
 
