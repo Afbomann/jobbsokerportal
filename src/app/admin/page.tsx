@@ -66,24 +66,18 @@ export default async function AdminPage() {
   if (!authenticated) return <LoginClient loginServer={loginServer} />;
 
   const applications = await prisma.application.findMany({
-    select: {
-      id: true,
-      title: true,
-      url: true,
-      expires: true,
-      positions: true,
-      type: true,
-    },
     orderBy: { id: "desc" },
   });
 
   return (
-    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto outline-slate-400 outline outline-1 p-[20px] flex flex-col bg-slate-100 lg:rounded-sm">
-      <h2 className="text-xl lg:text-2xl">Admin</h2>
+    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto border-slate-400 border border-1 p-[25px] flex flex-col bg-slate-100 lg:rounded-sm">
+      <h2 className="text-2xl lg:text-3xl font-bold text-gray-600">
+        Admin Dashboard
+      </h2>
 
-      <div className="mt-[2dvh] flex gap-[15px]">
+      <div className="mt-4 flex gap-4">
         <Link
-          className="text-sm lg:text-base bg-blue-200 px-[15px] py-[5px] rounded-md"
+          className="text-sm lg:text-base bg-blue-500 text-gray-50 px-4 py-2 rounded-md shadow-md hover:bg-blue-600 transition-colors"
           href={"/admin/new-application"}
         >
           Opprett ny utlysning
@@ -96,8 +90,8 @@ export default async function AdminPage() {
             cookies_.delete("token");
           }}
         >
-          <button className="text-sm lg:text-base bg-red-400 px-[15px] py-[5px] rounded-md">
-            Logg-ut
+          <button className="text-sm lg:text-base bg-red-500 text-gray-50 px-4 py-2 rounded-md shadow-md hover:bg-red-600 transition-colors">
+            Logg ut
           </button>
         </form>
       </div>
