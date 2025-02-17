@@ -2,23 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { TApplicationFilter } from "@/libs/types";
-import { applicationType } from "@prisma/client";
-import Link from "next/link";
+import { application, applicationType } from "@prisma/client";
+import ApplicationCard from "../(components)/ApplicationCard";
 
-export default function AdminClient(props: {
-  applications: {
-    id: string;
-    title: string;
-    url: string;
-    expires: Date;
-    positions: number;
-    type: applicationType;
-  }[];
-}) {
+export default function AdminClient(props: { applications: application[] }) {
   const [applications, setApplications] = useState(props.applications);
   const [filter, setFilter] = useState<TApplicationFilter>({
     search: "",
-    expires: "sort_expires_ascending",
+    expires: "sort_expires_descending",
     type: "all",
   });
 
@@ -38,12 +29,12 @@ export default function AdminClient(props: {
     filteredApplications.sort((a, b) => {
       if (filter.expires == "sort_expires_ascending") {
         return filter.type == "all"
-          ? b.expires.getTime() - a.expires.getTime()
-          : a.expires.getTime() - b.expires.getTime();
-      } else {
-        return filter.type == "all"
           ? a.expires.getTime() - b.expires.getTime()
           : b.expires.getTime() - a.expires.getTime();
+      } else {
+        return filter.type == "all"
+          ? b.expires.getTime() - a.expires.getTime()
+          : a.expires.getTime() - b.expires.getTime();
       }
     });
 
@@ -52,17 +43,17 @@ export default function AdminClient(props: {
 
   return (
     <>
-      <div className="mt-[2dvh] flex flex-wrap gap-[15px]">
+      <div className="mt-4 flex flex-wrap gap-4">
         <input
           placeholder="Søk etter en utlysning..."
-          className="flex-1 px-[15px] py-[6px] outline outline-1 outline-slate-300 rounded-md text-sm lg:text-base bg-white"
+          className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-sm lg:text-base bg-white shadow-sm focus:outline-none"
           onChange={(e) =>
             setFilter((prev) => (prev = { ...prev, search: e.target.value }))
           }
           value={filter.search}
         />
         <select
-          className="px-[15px] py-[6px] outline outline-1 outline-slate-300 rounded-md text-sm lg:text-base bg-white"
+          className="px-4 py-2 border border-gray-300 rounded-md text-sm lg:text-base bg-white shadow-sm focus:outline-none"
           onChange={(e) =>
             //@ts-expect-error funker fint
             setFilter((prev) => (prev = { ...prev, expires: e.target.value }))
@@ -73,7 +64,7 @@ export default function AdminClient(props: {
           <option value="sort_expires_descending">Sorter frist synkende</option>
         </select>
         <select
-          className="px-[15px] py-[6px] outline outline-1 outline-slate-300 rounded-md text-sm lg:text-base bg-white"
+          className="px-4 py-2 border border-gray-300 rounded-md text-sm lg:text-base bg-white shadow-sm focus:outline-none"
           onChange={(e) =>
             //@ts-expect-error funker fint
             setFilter((prev) => (prev = { ...prev, type: e.target.value }))
@@ -87,35 +78,13 @@ export default function AdminClient(props: {
       </div>
 
       {applications.length > 0 && (
-        <div className="mt-[2dvh] flex flex-col gap-[2dvh]">
+        <div className="mt-[2dvh] flex flex-wrap items-center gap-[2dvh]">
           {applications.map((application) => (
-            <div
-              className="bg-white rounded-md outline outline-1 outline-slate-300 p-[13px] flex flex-col gap-[3px]"
+            <ApplicationCard
               key={application.id}
-            >
-              <div className="flex gap-[10px] items-center">
-                <p className="text-base lg:text-lg mr-auto">
-                  <b>{application.title}</b>
-                </p>
-                <Link
-                  className="bg-blue-200 px-[15px] py-[5px] rounded-md text-sm lg:text-base"
-                  href={`/admin/${application.id}`}
-                >
-                  Rediger
-                </Link>
-              </div>
-              <Link
-                target="_blank"
-                className="underline text-blue-400 text-sm lg:text-base w-fit"
-                href={application.url}
-              >
-                Link til søknad
-              </Link>
-              <p className="text-sm lg:text-base">
-                Frist: {application.expires.toLocaleDateString("NO")} | Fag:{" "}
-                {application.type} | Stillinger: {application.positions}
-              </p>
-            </div>
+              application={application}
+              mode="edit"
+            />
           ))}
         </div>
       )}

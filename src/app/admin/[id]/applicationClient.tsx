@@ -107,36 +107,40 @@ export function ApplicationClient(props: {
   }
 
   return (
-    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto outline-slate-400 outline outline-1 p-[20px] flex flex-col bg-slate-100 lg:rounded-sm">
-      <h2 className="text-xl lg:text-2xl">
+    <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto border-slate-</form>400 border border-1 p-[25px] flex flex-col bg-slate-100 lg:rounded-sm">
+      <h2 className="text-xl lg:text-2xl font-bold text-gray-600">
         Rediger | {props.application.title}
       </h2>
-      <div className="flex-col my-[3dvh]">
-        <div className="flex gap-[20px] flex-wrap">
-          <div className="flex flex-col gap-[3px] w-full">
-            <label className="text-sm lg:text-base">Tittel</label>
+      <div className="flex flex-col gap-6 mt-7">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm lg:text-base font-medium">Tittel</label>
             <input
               value={input.title}
               onChange={(e) =>
                 setInput((prev) => (prev = { ...prev, title: e.target.value }))
               }
               type="text"
-              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300"
+              className="text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="flex flex-col gap-[3px] w-full">
-            <label className="text-sm lg:text-base">Link til søknad</label>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm lg:text-base font-medium">
+              Link til søknad
+            </label>
             <input
               value={input.url}
               onChange={(e) =>
                 setInput((prev) => (prev = { ...prev, url: e.target.value }))
               }
               type="text"
-              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300"
+              className="text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="flex flex-col gap-[3px]">
-            <label className="text-sm lg:text-base">Søknadsfrist</label>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm lg:text-base font-medium">
+              Søknadsfrist
+            </label>
             <input
               value={input.expires.toISOString().split("T")[0]}
               onChange={(e) => {
@@ -148,14 +152,15 @@ export function ApplicationClient(props: {
                       expires: new Date(e.target.value),
                     })
                 );
-                console.log(e.target.value);
               }}
               type="date"
-              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300 bg-white"
+              className="text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
             />
           </div>
-          <div className="flex flex-col gap-[3px]">
-            <label className="text-sm lg:text-base">Stillinger</label>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm lg:text-base font-medium">
+              Stillinger
+            </label>
             <input
               value={input.positions}
               onChange={(e) =>
@@ -165,11 +170,11 @@ export function ApplicationClient(props: {
                 )
               }
               type="number"
-              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300"
+              className="text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="flex flex-col gap-[3px]">
-            <label className="text-sm lg:text-base">Fag</label>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm lg:text-base font-medium">Fag</label>
             <select
               value={input.type}
               onChange={(e) =>
@@ -178,7 +183,7 @@ export function ApplicationClient(props: {
                   (prev) => (prev = { ...prev, type: e.target.value })
                 )
               }
-              className="text-sm lg:text-base rounded-md px-[8px] py-[4px] outline outline-1 outline-slate-300 bg-white"
+              className="text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
             >
               <option>Drift</option>
               <option>Utvikling</option>
@@ -186,28 +191,26 @@ export function ApplicationClient(props: {
           </div>
         </div>
         {status.loading && (
-          <p className="text-sm lg:text-base text-gray-600 mt-[10px]">
-            Laster...
-          </p>
+          <p className="text-sm lg:text-base text-gray-600 mt-4">Laster...</p>
         )}
         {status.error && (
-          <p className="text-sm lg:text-base text-red-400 mt-[10px]">
+          <p className="text-sm lg:text-base text-red-400 mt-4">
             {status.error}
           </p>
         )}
         <div
-          className={`flex gap-[15px] ${
-            !status.loading && !status.error ? "mt-[20px]" : "mt-[5px]"
+          className={`flex gap-4 ${
+            !status.loading && !status.error ? "mt-6" : "mt-4"
           }`}
         >
           <button
-            className="bg-blue-200 py-[5px] px-[15px] text-sm lg:text-base cursor-pointer rounded-md"
+            className="bg-blue-500 text-gray-50 py-2 px-4 text-sm lg:text-base cursor-pointer rounded-md hover:bg-blue-600 transition-colors"
             onClick={editApplicationClient}
           >
             Lagre
           </button>
           <button
-            className="bg-red-400 py-[5px] px-[15px] text-sm lg:text-base cursor-pointer rounded-md"
+            className="bg-red-400 text-gray-50 py-2 px-4 text-sm lg:text-base cursor-pointer rounded-md hover:bg-red-500 transition-colors"
             onClick={deleteApplicationClient}
           >
             Slett
