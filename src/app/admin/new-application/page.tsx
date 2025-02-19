@@ -19,6 +19,7 @@ export default async function NewApplicationPage() {
     expires: Date;
     positions: number;
     type: applicationType;
+    archivedText: string | null;
   }): Promise<TServerActionResponse> {
     "use server";
 
@@ -34,17 +35,20 @@ export default async function NewApplicationPage() {
       return { err: "Stillinger mangler." };
     if (!input.type) return { err: "Fag mangler." };
 
-    await prisma.application.create({
+    const applicationCreated = await prisma.application.create({
       data: {
         title: input.title,
         url: input.url,
         expires: input.expires,
         positions: input.positions,
         type: input.type,
+        archivedText: input.archivedText,
       },
     });
 
     revalidatePath("/admin");
+    revalidatePath("/");
+    revalidatePath(`/archived/${applicationCreated.id}`);
     return { suc: "Vellykket!" };
   }
 

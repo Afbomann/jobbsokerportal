@@ -3,17 +3,10 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { TServerActionResponse } from "@/libs/types";
-import { applicationType } from "@prisma/client";
+import { application, applicationType } from "@prisma/client";
 
 export function ApplicationClient(props: {
-  application: {
-    id: string;
-    title: string;
-    url: string;
-    expires: Date;
-    positions: number;
-    type: applicationType;
-  };
+  application: application;
   editApplicationServer: (
     input: {
       title: string;
@@ -21,6 +14,7 @@ export function ApplicationClient(props: {
       expires: Date;
       positions: number;
       type: applicationType;
+      archivedText: string | null;
     },
     id: string
   ) => Promise<TServerActionResponse>;
@@ -32,6 +26,7 @@ export function ApplicationClient(props: {
     expires: props.application.expires,
     positions: props.application.positions,
     type: props.application.type,
+    archivedText: props.application.archivedText,
   });
   const router = useRouter();
   const [status, setStatus] = useState({
@@ -188,6 +183,20 @@ export function ApplicationClient(props: {
               <option>Drift</option>
               <option>Utvikling</option>
             </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm lg:text-base font-medium">
+              Arkivert søknad (valgfri)
+            </label>
+            <textarea
+              defaultValue={input.archivedText ?? ""}
+              onChange={(e) =>
+                setInput(
+                  (prev) => (prev = { ...prev, archivedText: e.target.value })
+                )
+              }
+              className="h-[20dvh] text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
         </div>
         {status.loading && (
