@@ -12,6 +12,7 @@ export default function NewApplicationClient(props: {
     expires: Date;
     positions: number;
     type: applicationType;
+    archivedText: string | null;
   }) => Promise<TServerActionResponse>;
 }) {
   const router = useRouter();
@@ -21,12 +22,14 @@ export default function NewApplicationClient(props: {
     expires: Date;
     positions: number;
     type: applicationType;
+    archivedText: string | null;
   }>({
     title: "",
     url: "",
     expires: new Date(),
     positions: 0,
     type: "Drift",
+    archivedText: "",
   });
   const [status, setStatus] = useState({
     loading: false,
@@ -154,6 +157,20 @@ export default function NewApplicationClient(props: {
             <option>Drift</option>
             <option>Utvikling</option>
           </select>
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-sm lg:text-base font-medium">
+            Arkivert søknad (valgfri)
+          </label>
+          <textarea
+            defaultValue={input.archivedText ?? ""}
+            onChange={(e) =>
+              setInput(
+                (prev) => (prev = { ...prev, archivedText: e.target.value })
+              )
+            }
+            className="h-[20dvh] text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
         </div>
       </div>
       {status.loading && (

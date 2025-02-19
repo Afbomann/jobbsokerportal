@@ -48,6 +48,7 @@ export default async function ApplicationPage({
       expires: Date;
       positions: number;
       type: applicationType;
+      archivedText: string | null;
     },
     id: string
   ): Promise<TServerActionResponse> {
@@ -80,10 +81,13 @@ export default async function ApplicationPage({
         expires: input.expires,
         positions: input.positions,
         type: input.type,
+        archivedText: input.archivedText,
       },
     });
 
     revalidatePath("/admin");
+    revalidatePath("/");
+    revalidatePath(`/archived/${id}`);
     return { suc: "Vellykket!" };
   }
 
@@ -109,6 +113,8 @@ export default async function ApplicationPage({
     });
 
     revalidatePath("/admin");
+    revalidatePath("/");
+    revalidatePath(`/archived/${id}`);
     return { suc: "Vellykket!" };
   }
 
@@ -128,14 +134,7 @@ export default async function ApplicationPage({
 
   return (
     <ApplicationClient
-      application={{
-        id: applicationFound.id,
-        title: applicationFound.title,
-        url: applicationFound.url,
-        expires: applicationFound.expires,
-        positions: applicationFound.positions,
-        type: applicationFound.type,
-      }}
+      application={applicationFound}
       editApplicationServer={editApplicationServer}
       deleteApplicationServer={deleteApplicationServer}
     />

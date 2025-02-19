@@ -2,7 +2,7 @@ import Image from "next/image";
 import { prisma } from "@/libs/prisma";
 import { HomeClient } from "./homeClient";
 
-export const revalidate = 10;
+export const revalidate = 3600;
 
 export default async function HomePage() {
   const applications = await prisma.application.findMany({

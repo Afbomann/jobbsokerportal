@@ -50,14 +50,20 @@ export default function ApplicationCard(props: {
       <a
         href={
           props.mode == "view"
-            ? props.application.url
+            ? status === "EXPIRED"
+              ? `/archived/${props.application.id}`
+              : props.application.url
             : `/admin/${props.application.id}`
         }
         className="text-blue-500 hover:text-blue-700 text-xs lg:text-sm"
         target={props.mode == "view" ? "_blank" : ""}
         rel="noopener noreferrer"
       >
-        {props.mode == "view" ? "Se søknad" : "Rediger"}
+        {props.mode == "view"
+          ? status === "EXPIRED"
+            ? "Se arkivert søknad"
+            : "Se søknad"
+          : "Rediger"}
       </a>
     </div>
   );
