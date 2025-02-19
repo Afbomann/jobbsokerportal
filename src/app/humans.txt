@@ -1,0 +1,11 @@
+-- Jobbsøkerportal | Tiller VGS --
+
+Utviklet av Alexander F.B
+
+GitHub: https://github.com/Afbomann
+Repo: https://github.com/Afbomann/jobbsokerportal
+
+Stack: Next.js | React | Tailwind
+Database: MongoDB | Prisma ORM
+Testing: Vitest
+Language: TypeScript
