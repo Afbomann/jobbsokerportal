@@ -31,7 +31,7 @@ export default function ApplicationCard(props: {
       </div>
       <div className="flex justify-between items-center mb-2">
         <p className="text-sm lg:text-base text-gray-700">
-          <strong>{status === "VALID" ? "Frist" : "Utgikk"}:</strong>
+          <strong>{status === "EXPIRED" ? "Utgikk" : "Frist"}:</strong>
         </p>
         <p className="text-sm lg:text-base text-gray-700">
           {expiresDate.toLocaleDateString("no")}
