@@ -2,7 +2,10 @@ export function getStatus(
   expiresDate: Date,
   now: Date
 ): "EXPIRED" | "EXPIRES TODAY" | "VALID" {
-  if (expiresDate < now) {
+  if (
+    expiresDate.getTime() < now.getTime() &&
+    expiresDate.getDate() !== now.getDate()
+  ) {
     return "EXPIRED";
   } else if (
     expiresDate.getDate() === now.getDate() &&
