@@ -13,16 +13,30 @@ export default function ApplicationCard(props: {
       <div className="font-bold text-base lg:text-lg mb-2">
         {props.application.title}
       </div>
-      <p className="text-sm lg:text-base mb-2 text-gray-700">
-        <strong>Fag:</strong> {props.application.type}
-      </p>
-      <p className="text-sm lg:text-base mb-2 text-gray-700">
-        <strong>Stillinger:</strong> {props.application.positions}
-      </p>
-      <p className="text-sm lg:text-base mb-2 text-gray-700">
-        <strong>{status === "VALID" ? "Frist" : "Utgikk"}:</strong>{" "}
-        {expiresDate.toLocaleDateString("no")}
-      </p>
+      <div className="flex justify-between items-center mb-2">
+        <p className="text-sm lg:text-base text-gray-700">
+          <strong>Fag:</strong>
+        </p>
+        <p className="text-sm lg:text-base text-gray-700">
+          {props.application.type}
+        </p>
+      </div>
+      <div className="flex justify-between items-center mb-2">
+        <p className="text-sm lg:text-base text-gray-700">
+          <strong>Stillinger:</strong>
+        </p>
+        <p className="text-sm lg:text-base text-gray-700">
+          {props.application.positions}
+        </p>
+      </div>
+      <div className="flex justify-between items-center mb-2">
+        <p className="text-sm lg:text-base text-gray-700">
+          <strong>{status === "VALID" ? "Frist" : "Utgikk"}:</strong>
+        </p>
+        <p className="text-sm lg:text-base text-gray-700">
+          {expiresDate.toLocaleDateString("no")}
+        </p>
+      </div>
       {status === "EXPIRED" && (
         <p className="text-sm lg:text-base mb-2 text-red-500">
           Søknadsfristen har utgått!
