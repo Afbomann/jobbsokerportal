@@ -196,15 +196,18 @@ export function ApplicationClient(props: {
               </select>
             </div>
             <div className="flex flex-col gap-2">
-              <label className="text-sm lg:text-base font-medium flex flex-wrap gap-2">
-                Arkivert søknad (valgfri)
+              <div className="flex flex-wrap gap-2">
+                <label className="text-sm lg:text-base font-medium">
+                  Arkivert søknad (valgfri)
+                </label>
                 <button
+                  type="button"
                   className="text-sm lg:text-base bg-blue-500 text-gray-50 py-1 px-3 cursor-pointer rounded-md hover:bg-blue-600 transition-colors"
                   onClick={() => setShowMarkdownDisplay(() => true)}
                 >
                   Se markdown
                 </button>
-              </label>
+              </div>
               <textarea
                 defaultValue={input.archivedText ?? ""}
                 onChange={(e) =>
