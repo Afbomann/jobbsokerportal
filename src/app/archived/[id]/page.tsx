@@ -2,7 +2,7 @@ import { isValidObjectId } from "mongoose";
 import NotFound from "../../(components)/notFound";
 import { prisma } from "@/libs/prisma";
 import { Metadata } from "next";
-import ReactMarkdown from "react-markdown";
+import Markdown from "@/app/(components)/Markdown";
 
 export const revalidate = 3600;
 
@@ -58,23 +58,7 @@ export default async function ApplicationPage({
       )}
 
       {applicationFound.archivedText && (
-        <ReactMarkdown
-          className="flex flex-col gap-3 mt-[2dvh] text-gray-600 leading-relaxed flex-1 text-sm lg:text-base"
-          components={{
-            h1: ({ ...props }) => (
-              <h1 className="text-xl lg:text-2xl font-semibold" {...props} />
-            ),
-            h2: ({ ...props }) => (
-              <h2 className="text-lg lg:text-xl font-semibold" {...props} />
-            ),
-            ul: ({ ...props }) => (
-              <ul className="p-[20px] flex flex-col gap-2" {...props} />
-            ),
-            li: ({ ...props }) => <li className="list-disc" {...props} />,
-          }}
-        >
-          {applicationFound.archivedText}
-        </ReactMarkdown>
+        <Markdown text={applicationFound.archivedText} />
       )}
     </div>
   );
