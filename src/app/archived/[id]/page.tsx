@@ -2,6 +2,7 @@ import { isValidObjectId } from "mongoose";
 import NotFound from "../../(components)/notFound";
 import { prisma } from "@/libs/prisma";
 import { Metadata } from "next";
+import Markdown from "@/app/(components)/Markdown";
 
 export const revalidate = 3600;
 
@@ -46,7 +47,8 @@ export default async function ApplicationPage({
   return (
     <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto border-slate-400 border border-1 p-[25px] flex flex-col bg-slate-100 lg:rounded-sm">
       <h2 className="text-xl lg:text-2xl font-bold text-gray-600">
-        {applicationFound.title}
+        {applicationFound.title} | Arkivert søknad | Sist oppdatert{" "}
+        {applicationFound.updatedAt.toLocaleDateString("no")}
       </h2>
 
       {!applicationFound.archivedText && (
@@ -56,11 +58,7 @@ export default async function ApplicationPage({
       )}
 
       {applicationFound.archivedText && (
-        <textarea
-          defaultValue={applicationFound.archivedText}
-          className="text-sm lg:text-base mt-[2dvh] text-gray-600 leading-relaxed flex-1 bg-transparent outline-none"
-          readOnly={true}
-        />
+        <Markdown text={applicationFound.archivedText} />
       )}
     </div>
   );
