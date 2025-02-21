@@ -6,6 +6,14 @@ import Markdown from "@/app/(components)/Markdown";
 
 export const revalidate = 3600;
 
+export async function generateStaticParams() {
+  const applications = await prisma.application.findMany();
+
+  return applications.map((application) => {
+    return { id: application.id };
+  });
+}
+
 export async function generateMetadata({
   params,
 }: {
