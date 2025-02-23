@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
-import { authenticate } from "@/libs/authentication";
 import { Metadata } from "next";
 import NewApplicationClient from "./newApplicationClient";
 import { TServerActionResponse } from "@/libs/types";
 import { prisma } from "@/libs/prisma";
 import { revalidatePath } from "next/cache";
 import { applicationType } from "@prisma/client";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Jobbsøkerportal - Opprett ny stilling",
@@ -23,9 +23,9 @@ export default async function NewApplicationPage() {
   }): Promise<TServerActionResponse> {
     "use server";
 
-    const authenticated = await authenticate();
+    const session = await auth();
 
-    if (!authenticated) return { err: "Uautorisert." };
+    if (!session) return { err: "Uautorisert." };
 
     if (!input) return { err: "Input mangler." };
     if (!input.title) return { err: "Tittel mangler." };
@@ -52,9 +52,9 @@ export default async function NewApplicationPage() {
     return { suc: "Vellykket!" };
   }
 
-  const authenticated = await authenticate();
+  const session = await auth();
 
-  if (!authenticated) return redirect("/admin");
+  if (!session) return redirect("/admin");
 
   return (
     <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto border-slate-400 border border-1 p-[25px] flex flex-col bg-slate-100 lg:rounded-sm">
