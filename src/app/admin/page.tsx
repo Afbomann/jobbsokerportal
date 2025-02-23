@@ -1,18 +1,15 @@
-import { authenticate } from "@/libs/authentication";
+import { auth, signIn, signOut } from "@/auth";
 import LoginClient from "./loginClient";
 import { Metadata } from "next";
-import { cookies } from "next/headers";
-import jsonwebtoken from "jsonwebtoken";
 import { TServerActionResponse } from "@/libs/types";
 import { prisma } from "@/libs/prisma";
 import Link from "next/link";
 import AdminClient from "./adminClient";
-import bcrypt from "bcryptjs";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const authenticated = await authenticate();
+  const session = await auth();
 
-  if (!authenticated)
+  if (!session)
     return {
       title: "Jobbsøkerportal - Admin login",
       description: "Jobbsøkerportal - Admin login",
@@ -31,39 +28,27 @@ export default async function AdminPage() {
   }): Promise<TServerActionResponse> {
     "use server";
 
-    const authenticated = await authenticate();
+    const session = await auth();
 
-    if (authenticated) return { err: "Du er allerede logget inn." };
+    if (session) return { err: "Du er allerede logget inn." };
     if (!input) return { err: "Input mangler." };
-    if (!input.username) return { err: "Skriv inn brukernavn." };
-    if (!input.password) return { err: "Skriv inn passord." };
 
-    if (
-      input.username != process.env.ADMIN_USERNAME ||
-      !(await bcrypt.compare(input.password, process.env.ADMIN_PASSWORD!))
-    )
+    try {
+      await signIn("credentials", {
+        redirect: false,
+        username: input.username,
+        password: input.password,
+      });
+    } catch {
       return { err: "Feil brukernavn eller passord." };
-
-    const cookies_ = await cookies();
-    const token = jsonwebtoken.sign(
-      { data: true },
-      process.env.ADMIN_JWT_SECRET!,
-      { expiresIn: "1h" }
-    );
-    const expires = new Date();
-    expires.setHours(expires.getHours() + 1);
-    cookies_.set("token", token, {
-      expires: expires,
-      httpOnly: true,
-      secure: true,
-    });
+    }
 
     return { suc: "Vellykket!" };
   }
 
-  const authenticated = await authenticate();
+  const session = await auth();
 
-  if (!authenticated) return <LoginClient loginServer={loginServer} />;
+  if (!session) return <LoginClient loginServer={loginServer} />;
 
   const applications = await prisma.application.findMany({
     orderBy: { id: "desc" },
@@ -86,8 +71,7 @@ export default async function AdminPage() {
           action={async () => {
             "use server";
 
-            const cookies_ = await cookies();
-            cookies_.delete("token");
+            await signOut();
           }}
         >
           <button className="text-sm lg:text-base bg-red-500 text-gray-50 px-4 py-2 rounded-md shadow-md hover:bg-red-600 transition-colors">

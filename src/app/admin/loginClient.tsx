@@ -39,6 +39,7 @@ export default function LoginClient(props: {
           );
         } else {
           setStatus((prev) => (prev = { ...prev, loading: false, error: "" }));
+          window.location.reload();
         }
       })
       .catch((err: string) =>

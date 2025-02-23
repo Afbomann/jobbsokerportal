@@ -1,4 +1,3 @@
-import { authenticate } from "@/libs/authentication";
 import { redirect } from "next/navigation";
 import { isValidObjectId } from "mongoose";
 import NotFound from "@/app/(components)/notFound";
@@ -8,15 +7,16 @@ import { ApplicationClient } from "./applicationClient";
 import { TServerActionResponse } from "@/libs/types";
 import { revalidatePath } from "next/cache";
 import { applicationType } from "@prisma/client";
+import { auth } from "@/auth";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const authenticated = await authenticate();
+  const session = await auth();
 
-  if (!authenticated) return {};
+  if (!session) return {};
 
   const params_ = await params;
 
@@ -54,9 +54,9 @@ export default async function ApplicationPage({
   ): Promise<TServerActionResponse> {
     "use server";
 
-    const authenticated = await authenticate();
+    const session = await auth();
 
-    if (!authenticated) return { err: "Uautorisert." };
+    if (!session) return { err: "Uautorisert." };
 
     if (!input) return { err: "Input mangler." };
     if (!input.title) return { err: "Tittel mangler." };
@@ -96,9 +96,9 @@ export default async function ApplicationPage({
   ): Promise<TServerActionResponse> {
     "use server";
 
-    const authenticated = await authenticate();
+    const session = await auth();
 
-    if (!authenticated) return { err: "Uautorisert." };
+    if (!session) return { err: "Uautorisert." };
 
     if (!id) return { err: "ID mangler." };
 
@@ -118,9 +118,9 @@ export default async function ApplicationPage({
     return { suc: "Vellykket!" };
   }
 
-  const authenticated = await authenticate();
+  const session = await auth();
 
-  if (!authenticated) return redirect("/admin");
+  if (!session) return redirect("/admin");
 
   const params_ = await params;
 
