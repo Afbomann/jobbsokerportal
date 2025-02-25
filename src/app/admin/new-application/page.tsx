@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import NewApplicationClient from "./newApplicationClient";
 import { TServerActionResponse } from "@/libs/types";
 import { prisma } from "@/libs/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { applicationType } from "@prisma/client";
 import { auth } from "@/auth";
 
@@ -46,9 +46,8 @@ export default async function NewApplicationPage() {
       },
     });
 
-    revalidatePath("/admin");
-    revalidatePath("/");
-    revalidatePath(`/archived/${applicationCreated.id}`);
+    revalidateTag("applications");
+    revalidateTag("application-" + applicationCreated.id);
     return { suc: "Vellykket!" };
   }
 

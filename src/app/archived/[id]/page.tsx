@@ -1,13 +1,11 @@
 import { isValidObjectId } from "mongoose";
 import NotFound from "../../(components)/notFound";
-import { prisma } from "@/libs/prisma";
 import { Metadata } from "next";
 import Markdown from "@/app/(components)/Markdown";
-
-export const revalidate = 3600;
+import { getApplication, getApplications } from "@/libs/functions";
 
 export async function generateStaticParams() {
-  const applications = await prisma.application.findMany();
+  const applications = await getApplications();
 
   return applications.map((application) => {
     return { id: application.id };
@@ -24,9 +22,7 @@ export async function generateMetadata({
   if (!isValidObjectId(params_.id))
     return { title: "404 | Ikke funnet", description: "404 | Ikke funnet" };
 
-  const applicationFound = await prisma.application.findFirst({
-    where: { id: params_.id },
-  });
+  const applicationFound = await getApplication(params_.id);
 
   if (!applicationFound)
     return { title: "404 | Ikke funnet", description: "404 | Ikke funnet" };
@@ -46,9 +42,7 @@ export default async function ApplicationPage({
 
   if (!isValidObjectId(params_.id)) return <NotFound />;
 
-  const applicationFound = await prisma.application.findFirst({
-    where: { id: params_.id },
-  });
+  const applicationFound = await getApplication(params_.id);
 
   if (!applicationFound) return <NotFound />;
 
