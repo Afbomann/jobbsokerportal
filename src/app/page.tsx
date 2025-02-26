@@ -1,3 +1,5 @@
+"use cache";
+
 import Image from "next/image";
 import { HomeClient } from "./homeClient";
 import { getApplications } from "@/libs/functions";

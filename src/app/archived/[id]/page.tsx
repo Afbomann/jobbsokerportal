@@ -1,3 +1,5 @@
+"use cache";
+
 import { isValidObjectId } from "mongoose";
 import NotFound from "../../(components)/notFound";
 import { Metadata } from "next";
