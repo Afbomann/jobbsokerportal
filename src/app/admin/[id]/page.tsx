@@ -5,9 +5,10 @@ import { prisma } from "@/libs/prisma";
 import { Metadata } from "next";
 import { ApplicationClient } from "./applicationClient";
 import { TServerActionResponse } from "@/libs/types";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { applicationType } from "@prisma/client";
 import { auth } from "@/auth";
+import { getApplication } from "@/libs/functions";
 
 export async function generateMetadata({
   params,
@@ -23,9 +24,7 @@ export async function generateMetadata({
   if (!isValidObjectId(params_.id))
     return { title: "404 | Ikke funnet", description: "404 | Ikke funnet" };
 
-  const applicationFound = await prisma.application.findFirst({
-    where: { id: params_.id },
-  });
+  const applicationFound = await getApplication(params_.id);
 
   if (!applicationFound)
     return { title: "404 | Ikke funnet", description: "404 | Ikke funnet" };
@@ -67,9 +66,7 @@ export default async function ApplicationPage({
     if (!input.type) return { err: "Fag mangler." };
     if (!id) return { err: "ID mangler." };
 
-    const applicationFound = await prisma.application.findFirst({
-      where: { id: id },
-    });
+    const applicationFound = await getApplication(id);
 
     if (!applicationFound) return { err: `Søknad ikke funnet | ID: ${id}` };
 
@@ -85,9 +82,8 @@ export default async function ApplicationPage({
       },
     });
 
-    revalidatePath("/admin");
-    revalidatePath("/");
-    revalidatePath(`/archived/${id}`);
+    revalidateTag("applications");
+    revalidateTag("application-" + id);
     return { suc: "Vellykket!" };
   }
 
@@ -102,9 +98,7 @@ export default async function ApplicationPage({
 
     if (!id) return { err: "ID mangler." };
 
-    const applicationFound = await prisma.application.findFirst({
-      where: { id: id },
-    });
+    const applicationFound = await getApplication(id);
 
     if (!applicationFound) return { err: `Søknad ikke funnet | ID: ${id}` };
 
@@ -112,9 +106,8 @@ export default async function ApplicationPage({
       where: { id: id },
     });
 
-    revalidatePath("/admin");
-    revalidatePath("/");
-    revalidatePath(`/archived/${id}`);
+    revalidateTag("applications");
+    revalidateTag("application-" + id);
     return { suc: "Vellykket!" };
   }
 
@@ -126,9 +119,7 @@ export default async function ApplicationPage({
 
   if (!isValidObjectId(params_.id)) return <NotFound />;
 
-  const applicationFound = await prisma.application.findFirst({
-    where: { id: params_.id },
-  });
+  const applicationFound = await getApplication(params_.id);
 
   if (!applicationFound) return <NotFound />;
 

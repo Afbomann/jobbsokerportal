@@ -2,9 +2,9 @@ import { auth, signIn, signOut } from "@/auth";
 import LoginClient from "./loginClient";
 import { Metadata } from "next";
 import { TServerActionResponse } from "@/libs/types";
-import { prisma } from "@/libs/prisma";
 import Link from "next/link";
 import AdminClient from "./adminClient";
+import { getApplications } from "@/libs/functions";
 
 export async function generateMetadata(): Promise<Metadata> {
   const session = await auth();
@@ -50,9 +50,7 @@ export default async function AdminPage() {
 
   if (!session) return <LoginClient loginServer={loginServer} />;
 
-  const applications = await prisma.application.findMany({
-    orderBy: { id: "desc" },
-  });
+  const applications = await getApplications();
 
   return (
     <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto border-slate-400 border border-1 p-[25px] flex flex-col bg-slate-100 lg:rounded-sm">

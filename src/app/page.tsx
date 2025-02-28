@@ -1,13 +1,11 @@
-import Image from "next/image";
-import { prisma } from "@/libs/prisma";
-import { HomeClient } from "./homeClient";
+"use cache";
 
-export const revalidate = 3600;
+import Image from "next/image";
+import { HomeClient } from "./homeClient";
+import { getApplications } from "@/libs/functions";
 
 export default async function HomePage() {
-  const applications = await prisma.application.findMany({
-    orderBy: { id: "desc" },
-  });
+  const applications = await getApplications();
 
   return (
     <div className="w-[1000px] max-w-[100%] min-h-[100dvh] mx-auto border-slate-400 border border-1 p-[25px] flex flex-col bg-slate-100 lg:rounded-sm">
