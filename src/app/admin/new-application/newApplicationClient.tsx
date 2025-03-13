@@ -2,6 +2,7 @@
 
 import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
 import { newApplicationServer } from "@/lib/actions";
+import { TStatus } from "@/lib/types";
 import { ApplicationSchema } from "@/lib/zod";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -17,7 +18,7 @@ export default function NewApplicationClient() {
     type: "Drift",
     archivedText: "",
   });
-  const [status, setStatus] = useState({
+  const [status, setStatus] = useState<TStatus>({
     loading: false,
     error: "",
   });

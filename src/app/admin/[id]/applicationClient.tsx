@@ -7,6 +7,7 @@ import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
 import { deleteApplicationServer, editApplicationServer } from "@/lib/actions";
 import { z } from "zod";
 import { ApplicationSchema } from "@/lib/zod";
+import { TStatus } from "@/lib/types";
 
 export function ApplicationClient(props: { application: application }) {
   const [input, setInput] = useState<z.infer<typeof ApplicationSchema>>({
@@ -18,7 +19,7 @@ export function ApplicationClient(props: { application: application }) {
     archivedText: props.application.archivedText ?? "",
   });
   const router = useRouter();
-  const [status, setStatus] = useState({
+  const [status, setStatus] = useState<TStatus>({
     loading: false,
     error: "",
   });

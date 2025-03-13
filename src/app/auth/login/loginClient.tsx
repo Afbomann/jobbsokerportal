@@ -1,6 +1,7 @@
 "use client";
 
 import { loginServer } from "@/lib/actions";
+import { TStatus } from "@/lib/types";
 import { LoginSchema } from "@/lib/zod";
 import { FormEvent, useState } from "react";
 import { z } from "zod";
@@ -10,7 +11,7 @@ export default function LoginClient() {
     username: "",
     password: "",
   });
-  const [status, setStatus] = useState({
+  const [status, setStatus] = useState<TStatus>({
     loading: false,
     error: "",
   });
