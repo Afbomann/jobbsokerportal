@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import NewApplicationClient from "./newApplicationClient";
-import { TServerActionResponse } from "@/libs/types";
-import { prisma } from "@/libs/prisma";
+import { TServerActionResponse } from "@/lib/types";
+import { prisma } from "@/lib/prisma";
 import { revalidateTag } from "next/cache";
 import { applicationType } from "@prisma/client";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Jobbsøkerportal - Opprett ny stilling",

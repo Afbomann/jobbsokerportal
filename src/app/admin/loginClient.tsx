@@ -1,6 +1,6 @@
 "use client";
 
-import { TServerActionResponse } from "@/libs/types";
+import { TServerActionResponse } from "@/lib/types";
 import { FormEvent, useState } from "react";
 
 export default function LoginClient(props: {

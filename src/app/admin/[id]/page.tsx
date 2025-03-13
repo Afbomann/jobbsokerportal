@@ -1,14 +1,14 @@
 import { redirect } from "next/navigation";
 import { isValidObjectId } from "mongoose";
 import NotFound from "@/app/(components)/notFound";
-import { prisma } from "@/libs/prisma";
+import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 import { ApplicationClient } from "./applicationClient";
-import { TServerActionResponse } from "@/libs/types";
+import { TServerActionResponse } from "@/lib/types";
 import { revalidateTag } from "next/cache";
 import { applicationType } from "@prisma/client";
-import { auth } from "@/auth";
-import { getApplication } from "@/libs/functions";
+import { auth } from "@/lib/auth";
+import { getApplication } from "@/lib/functions";
 
 export async function generateMetadata({
   params,

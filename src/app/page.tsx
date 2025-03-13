@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { HomeClient } from "./homeClient";
-import { getApplications } from "@/libs/functions";
+import { getApplications } from "@/lib/functions";
 
 export default async function HomePage() {
   const applications = await getApplications();

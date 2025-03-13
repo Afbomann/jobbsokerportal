@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { TServerActionResponse } from "@/libs/types";
+import { TServerActionResponse } from "@/lib/types";
 import { application, applicationType } from "@prisma/client";
 import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
 

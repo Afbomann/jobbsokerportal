@@ -1,7 +1,7 @@
 "use client";
 
 import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
-import { TServerActionResponse } from "@/libs/types";
+import { TServerActionResponse } from "@/lib/types";
 import { applicationType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";

@@ -1,10 +1,10 @@
-import { auth, signIn, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/lib/auth";
 import LoginClient from "./loginClient";
 import { Metadata } from "next";
-import { TServerActionResponse } from "@/libs/types";
+import { TServerActionResponse } from "@/lib/types";
 import Link from "next/link";
 import AdminClient from "./adminClient";
-import { getApplications } from "@/libs/functions";
+import { getApplications } from "@/lib/functions";
 
 export async function generateMetadata(): Promise<Metadata> {
   const session = await auth();
