@@ -10,17 +10,13 @@ const AuthConfig: NextAuthConfig = {
         password: { label: "Passord", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) return null;
-
         const { username, password } = credentials as {
-          username?: string;
-          password?: string;
+          username: string;
+          password: string;
         };
 
-        if (!username || !password) return null;
-
         if (
-          username != process.env.ADMIN_USERNAME ||
+          username !== process.env.ADMIN_USERNAME ||
           !(await bcrypt.compare(password, process.env.ADMIN_PASSWORD!))
         ) {
           return null;

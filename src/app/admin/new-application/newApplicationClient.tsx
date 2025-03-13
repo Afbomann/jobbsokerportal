@@ -2,20 +2,14 @@
 
 import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
 import { newApplicationServer } from "@/lib/actions";
-import { applicationType } from "@prisma/client";
+import { ApplicationSchema } from "@/lib/zod";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { z } from "zod";
 
 export default function NewApplicationClient() {
   const router = useRouter();
-  const [input, setInput] = useState<{
-    title: string;
-    url: string;
-    expires: Date;
-    positions: number;
-    type: applicationType;
-    archivedText: string | null;
-  }>({
+  const [input, setInput] = useState<z.infer<typeof ApplicationSchema>>({
     title: "",
     url: "",
     expires: new Date(),
@@ -32,32 +26,17 @@ export default function NewApplicationClient() {
   async function newApplicationClient(e: FormEvent) {
     e.preventDefault();
 
-    if (!input.title)
-      return setStatus(
-        (prev) => (prev = { ...prev, error: "Tittel mangler." })
-      );
+    const parsed = ApplicationSchema.safeParse(input);
 
-    if (!input.url)
+    if (!parsed.success) {
       return setStatus(
-        (prev) => (prev = { ...prev, error: "Link til søknad mangler." })
+        (prev) => (prev = { ...prev, error: parsed.error.errors[0].message })
       );
-
-    if (!input.expires)
-      return setStatus(
-        (prev) => (prev = { ...prev, error: "Søknadsfrist mangler." })
-      );
-
-    if (!input.positions)
-      return setStatus(
-        (prev) => (prev = { ...prev, error: "Stillinger mangler." })
-      );
-
-    if (!input.type)
-      return setStatus((prev) => (prev = { ...prev, error: "Fag mangler." }));
+    }
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
-    await newApplicationServer(input)
+    await newApplicationServer(parsed.data)
       .then((response) => {
         if (response.err) {
           setStatus(

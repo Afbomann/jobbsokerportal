@@ -1,10 +1,15 @@
 "use client";
 
 import { loginServer } from "@/lib/actions";
+import { LoginSchema } from "@/lib/zod";
 import { FormEvent, useState } from "react";
+import { z } from "zod";
 
 export default function LoginClient() {
-  const [input, setInput] = useState({ username: "", password: "" });
+  const [input, setInput] = useState<z.infer<typeof LoginSchema>>({
+    username: "",
+    password: "",
+  });
   const [status, setStatus] = useState({
     loading: false,
     error: "",
@@ -13,19 +18,17 @@ export default function LoginClient() {
   async function loginClient(e: FormEvent) {
     e.preventDefault();
 
-    if (!input.username)
-      return setStatus(
-        (prev) => (prev = { ...prev, error: "Skriv inn brukernavn." })
-      );
+    const parsed = LoginSchema.safeParse(input);
 
-    if (!input.password)
+    if (!parsed.success) {
       return setStatus(
-        (prev) => (prev = { ...prev, error: "Skriv inn passord." })
+        (prev) => (prev = { ...prev, error: parsed.error.errors[0].message })
       );
+    }
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
-    await loginServer(input)
+    await loginServer(parsed.data)
       .then((response) => {
         if (response.err) {
           setStatus(

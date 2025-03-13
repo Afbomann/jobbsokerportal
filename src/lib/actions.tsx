@@ -1,26 +1,29 @@
 "use server";
 
-import { applicationType } from "@prisma/client";
 import { auth, signIn, signOut } from "./auth";
 import { TServerActionResponse } from "./types";
 import { prisma } from "./prisma";
 import { revalidateTag } from "next/cache";
 import { getApplication } from "./functions";
+import { z } from "zod";
+import { ApplicationSchema, LoginSchema } from "./zod";
 
-export async function loginServer(input: {
-  username: string;
-  password: string;
-}): Promise<TServerActionResponse> {
+export async function loginServer(
+  input: z.infer<typeof LoginSchema>
+): Promise<TServerActionResponse> {
   const session = await auth();
 
   if (session) return { err: "Du er allerede logget inn." };
-  if (!input) return { err: "Input mangler." };
+
+  const parsed = LoginSchema.safeParse(input);
+
+  if (!parsed.success) return { err: parsed.error.errors[0].message };
 
   try {
     await signIn("credentials", {
       redirect: false,
-      username: input.username,
-      password: input.password,
+      username: parsed.data.username,
+      password: parsed.data.password,
     });
   } catch {
     return { err: "Feil brukernavn eller passord." };
@@ -33,34 +36,20 @@ export async function logoutServer() {
   await signOut({ redirect: true, redirectTo: "/auth/login" });
 }
 
-export async function newApplicationServer(input: {
-  title: string;
-  url: string;
-  expires: Date;
-  positions: number;
-  type: applicationType;
-  archivedText: string | null;
-}): Promise<TServerActionResponse> {
+export async function newApplicationServer(
+  input: z.infer<typeof ApplicationSchema>
+): Promise<TServerActionResponse> {
   const session = await auth();
 
   if (!session) return { err: "Uautorisert." };
 
-  if (!input) return { err: "Input mangler." };
-  if (!input.title) return { err: "Tittel mangler." };
-  if (!input.url) return { err: "Link til søknad mangler." };
-  if (!input.expires) return { err: "Søknadsfrist mangler." };
-  if (!input.positions && input.positions != 0)
-    return { err: "Stillinger mangler." };
-  if (!input.type) return { err: "Fag mangler." };
+  const parsed = ApplicationSchema.safeParse(input);
+
+  if (!parsed.success) return { err: parsed.error.errors[0].message };
 
   const applicationCreated = await prisma.application.create({
     data: {
-      title: input.title,
-      url: input.url,
-      expires: input.expires,
-      positions: input.positions,
-      type: input.type,
-      archivedText: input.archivedText,
+      ...parsed.data,
     },
   });
 
@@ -71,27 +60,17 @@ export async function newApplicationServer(input: {
 }
 
 export async function editApplicationServer(
-  input: {
-    title: string;
-    url: string;
-    expires: Date;
-    positions: number;
-    type: applicationType;
-    archivedText: string | null;
-  },
+  input: z.infer<typeof ApplicationSchema>,
   id: string
 ): Promise<TServerActionResponse> {
   const session = await auth();
 
   if (!session) return { err: "Uautorisert." };
 
-  if (!input) return { err: "Input mangler." };
-  if (!input.title) return { err: "Tittel mangler." };
-  if (!input.url) return { err: "Link til søknad mangler." };
-  if (!input.expires) return { err: "Søknadsfrist mangler." };
-  if (!input.positions && input.positions != 0)
-    return { err: "Stillinger mangler." };
-  if (!input.type) return { err: "Fag mangler." };
+  const parsed = ApplicationSchema.safeParse(input);
+
+  if (!parsed.success) return { err: parsed.error.errors[0].message };
+
   if (!id) return { err: "ID mangler." };
 
   const applicationFound = await getApplication(id);
@@ -101,12 +80,7 @@ export async function editApplicationServer(
   await prisma.application.update({
     where: { id: id },
     data: {
-      title: input.title,
-      url: input.url,
-      expires: input.expires,
-      positions: input.positions,
-      type: input.type,
-      archivedText: input.archivedText,
+      ...parsed.data,
     },
   });
 
