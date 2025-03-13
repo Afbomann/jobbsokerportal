@@ -30,8 +30,8 @@ export async function generateMetadata({
     return { title: "404 | Ikke funnet", description: "404 | Ikke funnet" };
 
   return {
-    title: `${applicationFound.title} - Jobbsøkerportal`,
-    description: `${applicationFound.title} - Jobbsøkerportal`,
+    title: "Arkivert | " + applicationFound.title,
+    description: "Arkivert | " + applicationFound.title,
   };
 }
 

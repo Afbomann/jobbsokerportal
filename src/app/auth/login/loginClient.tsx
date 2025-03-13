@@ -1,14 +1,9 @@
 "use client";
 
-import { TServerActionResponse } from "@/lib/types";
+import { loginServer } from "@/lib/actions";
 import { FormEvent, useState } from "react";
 
-export default function LoginClient(props: {
-  loginServer: (input: {
-    username: string;
-    password: string;
-  }) => Promise<TServerActionResponse>;
-}) {
+export default function LoginClient() {
   const [input, setInput] = useState({ username: "", password: "" });
   const [status, setStatus] = useState({
     loading: false,
@@ -30,8 +25,7 @@ export default function LoginClient(props: {
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
-    await props
-      .loginServer(input)
+    await loginServer(input)
       .then((response) => {
         if (response.err) {
           setStatus(

@@ -2,25 +2,11 @@
 
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { TServerActionResponse } from "@/lib/types";
-import { application, applicationType } from "@prisma/client";
+import { application } from "@prisma/client";
 import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
+import { deleteApplicationServer, editApplicationServer } from "@/lib/actions";
 
-export function ApplicationClient(props: {
-  application: application;
-  editApplicationServer: (
-    input: {
-      title: string;
-      url: string;
-      expires: Date;
-      positions: number;
-      type: applicationType;
-      archivedText: string | null;
-    },
-    id: string
-  ) => Promise<TServerActionResponse>;
-  deleteApplicationServer: (id: string) => Promise<TServerActionResponse>;
-}) {
+export function ApplicationClient(props: { application: application }) {
   const [input, setInput] = useState({
     title: props.application.title,
     url: props.application.url,
@@ -64,8 +50,7 @@ export function ApplicationClient(props: {
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
-    await props
-      .editApplicationServer(input, props.application.id)
+    await editApplicationServer(input, props.application.id)
       .then((response) => {
         if (response.err) {
           setStatus(
@@ -86,8 +71,7 @@ export function ApplicationClient(props: {
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
-    await props
-      .deleteApplicationServer(props.application.id)
+    await deleteApplicationServer(props.application.id)
       .then((response) => {
         if (response.err) {
           setStatus(

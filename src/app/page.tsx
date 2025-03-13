@@ -3,6 +3,11 @@
 import Image from "next/image";
 import { HomeClient } from "./homeClient";
 import { getApplications } from "@/lib/functions";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tiller vgs - Jobbsøkerportal",
+};
 
 export default async function HomePage() {
   const applications = await getApplications();

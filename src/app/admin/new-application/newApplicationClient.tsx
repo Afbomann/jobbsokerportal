@@ -1,21 +1,12 @@
 "use client";
 
 import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
-import { TServerActionResponse } from "@/lib/types";
+import { newApplicationServer } from "@/lib/actions";
 import { applicationType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
-export default function NewApplicationClient(props: {
-  newApplicationServer: (input: {
-    title: string;
-    url: string;
-    expires: Date;
-    positions: number;
-    type: applicationType;
-    archivedText: string | null;
-  }) => Promise<TServerActionResponse>;
-}) {
+export default function NewApplicationClient() {
   const router = useRouter();
   const [input, setInput] = useState<{
     title: string;
@@ -66,8 +57,7 @@ export default function NewApplicationClient(props: {
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
-    await props
-      .newApplicationServer(input)
+    await newApplicationServer(input)
       .then((response) => {
         if (response.err) {
           setStatus(
