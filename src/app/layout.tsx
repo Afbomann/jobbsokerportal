@@ -7,7 +7,10 @@ const open_sans = Open_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Jobbsøkerportal - Tiller VGS",
+  title: {
+    template: "%s - Jobbsøkerportal",
+    default: "Jobbsøkerportal",
+  },
   description:
     "Dette er en portal som er utviklet for å gi deg oversikt over tilgjengelige utlysninger. Her kan du enkelt finne oppdaterte søknadsutlysninger og muligheter for å starte eller utvikle karrieren din innen ulike fagområder.",
   openGraph: { images: ["https://jobbsokerportal.vercel.app/images/bg.jpg"] },

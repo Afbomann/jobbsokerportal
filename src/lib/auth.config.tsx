@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { NextAuthConfig } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
-export const { auth, handlers, signIn, signOut } = NextAuth({
+const AuthConfig: NextAuthConfig = {
   providers: [
     Credentials({
       credentials: {
@@ -10,17 +10,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         password: { label: "Passord", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) return null;
-
         const { username, password } = credentials as {
-          username?: string;
-          password?: string;
+          username: string;
+          password: string;
         };
 
-        if (!username || !password) return null;
-
         if (
-          username != process.env.ADMIN_USERNAME ||
+          username !== process.env.ADMIN_USERNAME ||
           !(await bcrypt.compare(password, process.env.ADMIN_PASSWORD!))
         ) {
           return null;
@@ -30,4 +26,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
-});
+};
+
+export default AuthConfig;

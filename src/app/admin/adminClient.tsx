@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TApplicationFilter } from "@/libs/types";
+import { TApplicationFilter } from "@/lib/types";
 import { application } from "@prisma/client";
 import ApplicationCard from "../(components)/ApplicationCard";
 

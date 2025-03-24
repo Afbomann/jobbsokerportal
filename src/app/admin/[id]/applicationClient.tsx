@@ -2,35 +2,24 @@
 
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { TServerActionResponse } from "@/libs/types";
-import { application, applicationType } from "@prisma/client";
+import { application } from "@prisma/client";
 import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
+import { deleteApplicationServer, editApplicationServer } from "@/lib/actions";
+import { z } from "zod";
+import { ApplicationSchema } from "@/lib/zod";
+import { TStatus } from "@/lib/types";
 
-export function ApplicationClient(props: {
-  application: application;
-  editApplicationServer: (
-    input: {
-      title: string;
-      url: string;
-      expires: Date;
-      positions: number;
-      type: applicationType;
-      archivedText: string | null;
-    },
-    id: string
-  ) => Promise<TServerActionResponse>;
-  deleteApplicationServer: (id: string) => Promise<TServerActionResponse>;
-}) {
-  const [input, setInput] = useState({
+export function ApplicationClient(props: { application: application }) {
+  const [input, setInput] = useState<z.infer<typeof ApplicationSchema>>({
     title: props.application.title,
     url: props.application.url,
     expires: props.application.expires,
     positions: props.application.positions,
     type: props.application.type,
-    archivedText: props.application.archivedText,
+    archivedText: props.application.archivedText ?? "",
   });
   const router = useRouter();
-  const [status, setStatus] = useState({
+  const [status, setStatus] = useState<TStatus>({
     loading: false,
     error: "",
   });
@@ -39,33 +28,17 @@ export function ApplicationClient(props: {
   async function editApplicationClient(e: FormEvent) {
     e.preventDefault();
 
-    if (!input.title)
-      return setStatus(
-        (prev) => (prev = { ...prev, error: "Tittel mangler." })
-      );
+    const parsed = ApplicationSchema.safeParse(input);
 
-    if (!input.url)
+    if (!parsed.success) {
       return setStatus(
-        (prev) => (prev = { ...prev, error: "Link til søknad mangler." })
+        (prev) => (prev = { ...prev, error: parsed.error.errors[0].message })
       );
-
-    if (!input.expires)
-      return setStatus(
-        (prev) => (prev = { ...prev, error: "Søknadsfrist mangler." })
-      );
-
-    if (!input.positions)
-      return setStatus(
-        (prev) => (prev = { ...prev, error: "Stillinger mangler." })
-      );
-
-    if (!input.type)
-      return setStatus((prev) => (prev = { ...prev, error: "Fag mangler." }));
+    }
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
-    await props
-      .editApplicationServer(input, props.application.id)
+    await editApplicationServer(parsed.data, props.application.id)
       .then((response) => {
         if (response.err) {
           setStatus(
@@ -86,8 +59,7 @@ export function ApplicationClient(props: {
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
-    await props
-      .deleteApplicationServer(props.application.id)
+    await deleteApplicationServer(props.application.id)
       .then((response) => {
         if (response.err) {
           setStatus(

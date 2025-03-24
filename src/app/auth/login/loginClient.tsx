@@ -1,16 +1,17 @@
 "use client";
 
-import { TServerActionResponse } from "@/libs/types";
+import { loginServer } from "@/lib/actions";
+import { TStatus } from "@/lib/types";
+import { LoginSchema } from "@/lib/zod";
 import { FormEvent, useState } from "react";
+import { z } from "zod";
 
-export default function LoginClient(props: {
-  loginServer: (input: {
-    username: string;
-    password: string;
-  }) => Promise<TServerActionResponse>;
-}) {
-  const [input, setInput] = useState({ username: "", password: "" });
-  const [status, setStatus] = useState({
+export default function LoginClient() {
+  const [input, setInput] = useState<z.infer<typeof LoginSchema>>({
+    username: "",
+    password: "",
+  });
+  const [status, setStatus] = useState<TStatus>({
     loading: false,
     error: "",
   });
@@ -18,20 +19,17 @@ export default function LoginClient(props: {
   async function loginClient(e: FormEvent) {
     e.preventDefault();
 
-    if (!input.username)
-      return setStatus(
-        (prev) => (prev = { ...prev, error: "Skriv inn brukernavn." })
-      );
+    const parsed = LoginSchema.safeParse(input);
 
-    if (!input.password)
+    if (!parsed.success) {
       return setStatus(
-        (prev) => (prev = { ...prev, error: "Skriv inn passord." })
+        (prev) => (prev = { ...prev, error: parsed.error.errors[0].message })
       );
+    }
 
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
-    await props
-      .loginServer(input)
+    await loginServer(parsed.data)
       .then((response) => {
         if (response.err) {
           setStatus(

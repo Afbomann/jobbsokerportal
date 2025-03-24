@@ -1,6 +1,6 @@
 "server-only";
 
-import { prisma } from "@/libs/prisma";
+import { prisma } from "@/lib/prisma";
 import type { application } from "@prisma/client";
 import { cacheLife } from "next/dist/server/use-cache/cache-life";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";

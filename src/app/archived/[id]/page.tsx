@@ -4,7 +4,7 @@ import { isValidObjectId } from "mongoose";
 import NotFound from "../../(components)/notFound";
 import { Metadata } from "next";
 import Markdown from "@/app/(components)/Markdown";
-import { getApplication, getApplications } from "@/libs/functions";
+import { getApplication, getApplications } from "@/lib/functions";
 
 export async function generateStaticParams() {
   const applications = await getApplications();
@@ -30,8 +30,8 @@ export async function generateMetadata({
     return { title: "404 | Ikke funnet", description: "404 | Ikke funnet" };
 
   return {
-    title: `${applicationFound.title} - Jobbsøkerportal`,
-    description: `${applicationFound.title} - Jobbsøkerportal`,
+    title: "Arkivert | " + applicationFound.title,
+    description: "Arkivert | " + applicationFound.title,
   };
 }
 
