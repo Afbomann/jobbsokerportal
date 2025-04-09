@@ -13,6 +13,8 @@ export function getStatus(
     expiresDate.getFullYear() === now.getFullYear()
   ) {
     return "EXPIRES TODAY";
+  } else if (expiresDate.getTime() < now.getTime()) {
+    return "EXPIRED";
   } else {
     return "VALID";
   }

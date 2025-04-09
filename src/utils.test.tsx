@@ -31,4 +31,9 @@ describe("getStatus", () => {
     const expiresDate = new Date("2023-01-02");
     expect(getStatus(expiresDate, now)).toBe("VALID");
   });
+  it('should return "EXPIRED" even if its the same date', () => {
+    const now = new Date("2023-02-01");
+    const expiresDate = new Date("2023-01-01");
+    expect(getStatus(expiresDate, now)).toBe("EXPIRED");
+  });
 });
