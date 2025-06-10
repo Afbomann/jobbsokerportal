@@ -17,6 +17,7 @@ export default function NewApplicationClient() {
     positions: 0,
     type: "Drift",
     archivedText: "",
+    archived: false,
   });
   const [status, setStatus] = useState<TStatus>({
     loading: false,

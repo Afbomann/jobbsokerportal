@@ -17,6 +17,7 @@ export function ApplicationClient(props: { application: application }) {
     positions: props.application.positions,
     type: props.application.type,
     archivedText: props.application.archivedText ?? "",
+    archived: props.application.archived,
   });
   const router = useRouter();
   const [status, setStatus] = useState<TStatus>({
@@ -165,6 +166,28 @@ export function ApplicationClient(props: { application: application }) {
               >
                 <option>Drift</option>
                 <option>Utvikling</option>
+              </select>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm lg:text-base font-medium">
+                Arkivert?
+              </label>
+              <select
+                value={input.archived ? 1 : 0}
+                onChange={(e) =>
+                  setInput(
+                    (prev) =>
+                      (prev = {
+                        ...prev,
+                        //@ts-expect-error funker fint
+                        archived: e.target.value == 1 ? true : false,
+                      })
+                  )
+                }
+                className="text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              >
+                <option value={1}>Ja</option>
+                <option value={0}>Nei</option>
               </select>
             </div>
             <div className="flex flex-col gap-2">

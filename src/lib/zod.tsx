@@ -13,4 +13,5 @@ export const ApplicationSchema = z.object({
   positions: z.number().min(1, { message: "Stillinger mangler." }),
   type: z.nativeEnum(applicationType, { message: "Fag mangler." }),
   archivedText: z.string(),
+  archived: z.boolean(),
 });

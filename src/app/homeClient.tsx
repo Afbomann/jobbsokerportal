@@ -39,11 +39,15 @@ export function HomeClient(props: { applications: application[] }) {
   }, [filter, props.applications]);
 
   const applicationsValid = applications.filter(
-    (application) => getStatus(application.expires, new Date()) != "EXPIRED"
+    (application) =>
+      getStatus(application.expires, new Date()) != "EXPIRED" &&
+      application.archived == false
   );
 
   const applicationsExpired = applications.filter(
-    (application) => getStatus(application.expires, new Date()) == "EXPIRED"
+    (application) =>
+      getStatus(application.expires, new Date()) == "EXPIRED" &&
+      application.archived == false
   );
 
   return (
