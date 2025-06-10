@@ -47,6 +47,8 @@ export async function newApplicationServer(
 
   if (!parsed.success) return { err: parsed.error.errors[0].message };
 
+  parsed.data = { ...parsed.data, archived: false };
+
   const applicationCreated = await prisma.application.create({
     data: {
       ...parsed.data,

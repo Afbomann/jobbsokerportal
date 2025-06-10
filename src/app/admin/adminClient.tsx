@@ -37,6 +37,14 @@ export default function AdminClient(props: { applications: application[] }) {
     setApplications(() => filteredApplications);
   }, [filter, props.applications]);
 
+  const normalApplications = applications.filter(
+    (application) => application.archived == false
+  );
+
+  const archivedApplications = applications.filter(
+    (application) => application.archived == true
+  );
+
   return (
     <>
       <div className="mt-4 flex flex-wrap gap-4">
@@ -73,9 +81,29 @@ export default function AdminClient(props: { applications: application[] }) {
         </select>
       </div>
 
-      {applications.length > 0 && (
+      <h4 className="text-lg lg:text-xl mt-5 font-semibold text-gray-600">
+        Utlysninger ({normalApplications.length})
+      </h4>
+
+      {normalApplications.length > 0 && (
         <div className="mt-[2dvh] flex flex-wrap items-center gap-[2dvh]">
-          {applications.map((application) => (
+          {normalApplications.map((application) => (
+            <ApplicationCard
+              key={application.id}
+              application={application}
+              mode="edit"
+            />
+          ))}
+        </div>
+      )}
+
+      <h4 className="text-lg lg:text-xl mt-8 font-semibold text-gray-600">
+        Utlysninger arkivert ({archivedApplications.length})
+      </h4>
+
+      {archivedApplications.length > 0 && (
+        <div className="mt-[2dvh] flex flex-wrap items-center gap-[2dvh]">
+          {archivedApplications.map((application) => (
             <ApplicationCard
               key={application.id}
               application={application}
